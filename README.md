@@ -5,7 +5,15 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
-Core - Trailpack for Proxy Engine
+Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexability of [Trails.js](http://trailsjs.io) as a backend framework, this node.js system is an event management engine made for plugins, most notably Proxy-CMS and Proxy-Cart from your friends at [Cali Style](https://cali-style.com).
+
+The goals of Proxy Engine is to be a free form scaffold that focuses on modern web applications and testability for enterprise grade applications. 
+
+Currently in the Proxy Cart ecosystem:
+- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router)
+- [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart)
+- [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms)
+
 
 ## Install
 
