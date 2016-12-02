@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-engine",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Core - Trailpack for Proxy Engine",
   "homepage": "http://trailsjs.io",
   "author": {
@@ -38,5 +38,5 @@
     "extends": "trails"
   },
   "repository": "git@github.com:CaliStyle/trailpack-proxy-engine.git",
-  "license": "Apache-2.0"
+  "license": "MIT"
 }
