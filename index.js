@@ -2,7 +2,7 @@
 
 const Trailpack = require('trailpack')
 
-module.exports = class EngineTrailpack extends Trailpack {
+module.exports = class ProxyEngineTrailpack extends Trailpack {
 
   /**
    * TODO document method

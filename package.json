@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-engine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Core - Trailpack for Proxy Engine",
   "homepage": "http://trailsjs.io",
   "author": {
@@ -21,12 +21,11 @@
   },
   "devDependencies": {
     "lodash": "^4.11.1",
-    "trails": "latest",
     "eslint": "^2.4",
-    "eslint-config-trails": "^1.0.4",
+    "eslint-config-trails": "^2",
     "mocha": "^2.4.5",
-    "smokesignals": "^1.0.9",
-    "trailpack-core": "^1.0.0-beta-6"
+    "smokesignals": "v2-latest",
+    "trails": "v2-latest"
   },
   "scripts": {
     "test": "eslint --fix . && mocha",
