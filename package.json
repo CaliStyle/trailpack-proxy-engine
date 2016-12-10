@@ -17,7 +17,7 @@
     "trailjs"
   ],
   "dependencies": {
-    "trailpack": "latest"
+    "trailpack": "v2-latest"
   },
   "devDependencies": {
     "lodash": "^4.11.1",
