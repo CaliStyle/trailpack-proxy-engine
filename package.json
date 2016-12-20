@@ -23,11 +23,17 @@
     "trailpack": "v2-latest"
   },
   "devDependencies": {
-    "lodash": "^4.11.1",
     "eslint": "^2.4",
     "eslint-config-trails": "^2",
+    "express": "^4.14.0",
+    "lodash": "^4.11.1",
     "mocha": "^2.4.5",
+    "sails-disk": "^0.10.10",
     "smokesignals": "v2-latest",
+    "sqlite3": "^3.1.4",
+    "supertest": "^2.0.1",
+    "trailpack-express": "^2.0.0-rc1",
+    "trailpack-sequelize": "^1.1.1",
     "trails": "v2-latest"
   },
   "scripts": {

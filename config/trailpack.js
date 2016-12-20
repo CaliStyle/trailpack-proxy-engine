@@ -23,7 +23,7 @@ module.exports = {
       emit: ['trailpack:proxyengine:configured']
     },
     initialize: {
-      listen: [],
+      listen: ['trailpack:sequelize:initialized'],
       emit: ['trailpack:proxyengine:initialized']
     }
   }
