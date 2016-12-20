@@ -20,6 +20,8 @@
     "trailjs"
   ],
   "dependencies": {
+    "proxy-engine-errors": "^1.0.0",
+    "proxy-engine-helpers": "^1.0.1",
     "trailpack": "v2-latest"
   },
   "devDependencies": {

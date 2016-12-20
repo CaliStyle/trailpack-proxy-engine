@@ -1,7 +1,8 @@
+/* eslint new-cap: [0] */
 'use strict'
 
 const Model = require('trails/model')
-
+const helpers = require('proxy-engine-helpers')
 /**
  * @module Event
  * @description Event Model
@@ -32,7 +33,14 @@ module.exports = class Event extends Model {
   static schema (app, Sequelize) {
     let schema = {}
     if (app.config.database.orm === 'sequelize') {
-      schema = {}
+      schema = {
+        object: {
+          type: Sequelize.STRING
+        },
+        data: helpers.JSONB('event', app, Sequelize, 'data', {
+          defaultValue: {}
+        })
+      }
     }
     return schema
   }
