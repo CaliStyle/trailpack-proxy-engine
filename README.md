@@ -5,15 +5,18 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
-Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexability of [Trails.js](http://trailsjs.io) as a backend framework, this node.js system is an event management engine made for plugins, most notably Proxy-CMS and Proxy-Cart from your friends at [Cali Style](https://cali-style.com).
+Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexibility and speed of [Trails.js](http://trailsjs.io) as a backend framework.
+This node.js system is an event management engine made for plugins from your friends at [Cali Style](https://cali-style.com).
 
-The goals of Proxy Engine is to be a free form scaffold that focuses on modern web applications and testability for enterprise grade applications. 
+The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. 
 
-Currently in the Proxy Cart ecosystem:
-- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router)
-- [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart)
-- [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms)
-
+Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
+- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing
+- [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
+- [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System
+- [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System
+- [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
+- [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
 
 ## Install
 
@@ -35,6 +38,7 @@ module.exports = {
   packs: [
     // ... other trailpacks
     require('trailpack-proxy-engine')
+    // ... other proxy-packs
   ]
 }
 ```
