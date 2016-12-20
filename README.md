@@ -57,8 +57,8 @@ module.exports = {
 
 [npm-image]: https://img.shields.io/npm/v/trailpack-proxy-engine.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/trailpack-proxy-engine
-[ci-image]: https://img.shields.io/travis/calistyle/trailpack-proxy-engine/master.svg?style=flat-square
-[ci-url]: https://travis-ci.org/calistyle/trailpack-proxy-engine
+[ci-image]: https://img.shields.io/circleci/project/github/CaliStyle/trailpack-proxy-engine/master.svg
+[ci-url]: https://circleci.com/gh/CaliStyle/trailpack-proxy-engine/tree/master
 [daviddm-image]: http://img.shields.io/david/calistyle/trailpack-proxy-engine.svg?style=flat-square
 [daviddm-url]: https://david-dm.org/calistyle/trailpack-proxy-engine
 [codeclimate-image]: https://img.shields.io/codeclimate/github/calistyle/trailpack-proxy-engine.svg?style=flat-square
