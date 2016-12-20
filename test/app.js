@@ -1,10 +1,13 @@
+/* eslint new-cap: [0]*/
 'use strict'
+
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const fs = require('fs')
 // const lib = require('../lib')
 
 const packs = [
+  require('trailpack-router'),
   require('../') // trailpack-proxy-engine
 ]
 
@@ -76,6 +79,9 @@ const App = {
     },
     policies: {
 
+    },
+    log: {
+      logger: new smokesignals.Logger('debug')
     },
     web: web,
     // Proxy Generics

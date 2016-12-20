@@ -7,9 +7,9 @@ const lib = require('./lib')
 module.exports = class ProxyEngineTrailpack extends Trailpack {
 
   /**
-   * TODO document method
+   * Validate Configuration
    */
-  validate (app) {
+  validate () {
     if (!_.includes(_.keys(this.app.packs), 'express')) {
       return Promise.reject(new Error('This Trailpack only works for express!'))
     }
