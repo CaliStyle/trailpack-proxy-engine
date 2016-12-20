@@ -1,0 +1,1 @@
+exports.Event = require('./Event')

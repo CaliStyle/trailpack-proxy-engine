@@ -18,6 +18,18 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
 
+## Dependencies
+### Supported ORMs
+| Repo          |  Build Status (edge)                  |
+|---------------|---------------------------------------|
+| [trailpack-sequelize](https://github.com/trailsjs/trailpack-sequelize) | [![Build status][ci-sequelize-image]][ci-sequelize-url] |
+
+### Supported Webserver
+| Repo          |  Build Status (edge)                  |
+|---------------|---------------------------------------|
+| [trailpack-express](https://github.com/trailsjs/trailpack-express) | [![Build status][ci-express-image]][ci-express-url] |
+
+
 ## Install
 
 ```sh
@@ -52,3 +64,8 @@ module.exports = {
 [codeclimate-image]: https://img.shields.io/codeclimate/github/calistyle/trailpack-proxy-engine.svg?style=flat-square
 [codeclimate-url]: https://codeclimate.com/github/calistyle/trailpack-proxy-engine
 
+[ci-sequelize-image]: https://img.shields.io/travis/trailsjs/trailpack-sequelize/master.svg?style=flat-square
+[ci-sequelize-url]: https://travis-ci.org/trailsjs/trailpack-sequelize
+
+[ci-express-image]: https://img.shields.io/travis/trailsjs/trailpack-express/master.svg?style=flat-square
+[ci-express-url]: https://travis-ci.org/trailsjs/trailpack-express
