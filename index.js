@@ -23,10 +23,14 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
   }
 
   /**
-   * TODO document method
+   * Adds Routes, Policies, and Agenda
    */
   configure () {
-
+    return Promise.all([
+      lib.ProxyEngine.addPolicies(this.app),
+      lib.ProxyEngine.addRoutes(this.app),
+      lib.ProxyEngine.addAgenda(this.app)
+    ])
   }
 
   /**
