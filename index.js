@@ -29,7 +29,8 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
     return Promise.all([
       lib.ProxyEngine.addPolicies(this.app),
       lib.ProxyEngine.addRoutes(this.app),
-      lib.ProxyEngine.addAgenda(this.app)
+      lib.ProxyEngine.addAgenda(this.app),
+      lib.ProxyEngine.copyDefaults(this.app)
     ])
   }
 
