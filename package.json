@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-engine",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Core - Trailpack for Proxy Engine",
   "homepage": "http://trailsjs.io",
   "author": {
@@ -23,6 +23,7 @@
     "joi": "^9.0.4",
     "proxy-engine-errors": "^1.0.1",
     "proxy-engine-helpers": "^1.0.1",
+    "shortid": "^2.2.6",
     "trailpack": "v2-latest"
   },
   "devDependencies": {

@@ -1,3 +1,4 @@
+/* eslint no-console: [0] */
 'use strict'
 
 const Service = require('trails/service')
@@ -31,6 +32,10 @@ module.exports = class ProxyEngineService extends Service {
       return Promise.reject(new Errors.ModelError('E_NOT_FOUND', `${modelName} can't be found`))
     }
     return Model.count(criteria, modelOptions)
+  }
+  createEvent(event){
+    const Event = this.getModel('Event')
+    return Event.create(event)
   }
 }
 
