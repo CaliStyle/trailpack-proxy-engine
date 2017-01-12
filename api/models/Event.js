@@ -22,7 +22,7 @@ module.exports = class Event extends Model {
             beforeCreate: (values, options, fn) => {
               // TODO make this an actual request id and not just a random generate on create
               values.request = `req_${shortid.generate()}`
-              console.log(values)
+              // console.log(values)
               fn()
             },
             afterCreate: (values, options, fn) => {

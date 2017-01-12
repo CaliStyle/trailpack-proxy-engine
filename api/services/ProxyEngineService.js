@@ -33,6 +33,12 @@ module.exports = class ProxyEngineService extends Service {
     }
     return Model.count(criteria, modelOptions)
   }
+
+  /**
+   *
+   * @param event
+   * @returns {event}
+   */
   createEvent(event){
     const Event = this.getModel('Event')
     return Event.create(event)

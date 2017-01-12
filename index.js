@@ -1,3 +1,4 @@
+/* eslint no-console: [0] */
 'use strict'
 
 const Trailpack = require('trailpack')
@@ -38,7 +39,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    * TODO document method
    */
   initialize () {
-
+    return lib.ProxyEngine.stream(this.app)
   }
 
   constructor (app) {
