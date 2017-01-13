@@ -50,8 +50,28 @@ module.exports = class ProxyEngineService extends Service {
    * @param func
    * @returns {*}
    */
-  subscribe(type, func){
-    return this.app.proxyEngine.pubSub.subscribe(type, func)
+  subscribe(name, type, func){
+    const tryCatch = function (type, data) {
+      try {
+        func(type, data)
+      }
+      catch (err){
+        console.log(err)
+        const event = {
+          object: type.split('.')[0],
+          type: type,
+          data: data
+        }
+        this.subscriptionFailure(event, name)
+      }
+    }
+    return this.app.proxyEngine.pubSub.subscribe(type, tryCatch)
+  }
+  // TODO find or create event and create EventSubscriber
+  subscriptionFailure(event, name){
+    // return this.createEvent(event, {
+    //   include
+    // })
   }
 
   /**
@@ -68,9 +88,9 @@ module.exports = class ProxyEngineService extends Service {
    * @param event
    * @returns {event}
    */
-  createEvent(event){
+  createEvent(event, options){
     const Event = this.getModel('Event')
-    return Event.create(event)
+    return Event.create(event, options)
   }
 
   /**

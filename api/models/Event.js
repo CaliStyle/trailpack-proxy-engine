@@ -34,9 +34,14 @@ module.exports = class Event extends Model {
              * Associate the Model
              * @param models
              */
-            // associate: (models) => {
-            //
-            // }
+            associate: (models) => {
+              models.Event.hasMany(models.EventSubscriber, {
+                as: 'subscribers',
+                foreignKey: 'event_id',
+                through: null,
+                onDelete: 'CASCADE'
+              })
+            }
           }
         }
       }
@@ -57,7 +62,7 @@ module.exports = class Event extends Model {
           defaultValue: {}
         }),
         // The count of pending webhooks
-        pending_webhooks: {
+        pending_attempts: {
           type: Sequelize.INTEGER,
           defaultValue: 0
           // notNull: true
