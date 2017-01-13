@@ -39,7 +39,10 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    * TODO document method
    */
   initialize () {
-    return lib.ProxyEngine.stream(this.app)
+    return Promise.all([
+      lib.ProxyEngine.init(this.app),
+      lib.ProxyEngine.streamSequelize(this.app)
+    ])
   }
 
   constructor (app) {

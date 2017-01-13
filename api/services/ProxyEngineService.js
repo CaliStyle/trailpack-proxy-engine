@@ -35,6 +35,35 @@ module.exports = class ProxyEngineService extends Service {
   }
 
   /**
+   * Publish into proxyEngine PubSub
+   * @param type
+   * @param data
+   * @returns {*}
+   */
+  publish(type, data) {
+    return this.app.proxyEngine.pubSub.publish(type, data)
+  }
+
+  /**
+   *
+   * @param type
+   * @param func
+   * @returns {*}
+   */
+  subscribe(type, func){
+    return this.app.proxyEngine.pubSub.subscribe(type, func)
+  }
+
+  /**
+   *
+   * @param token
+   * @returns {*}
+   */
+  unsubscribe(token){
+    return this.app.proxyEngine.pubSub.unsubscribe(token)
+  }
+
+  /**
    *
    * @param event
    * @returns {event}
@@ -42,6 +71,20 @@ module.exports = class ProxyEngineService extends Service {
   createEvent(event){
     const Event = this.getModel('Event')
     return Event.create(event)
+  }
+
+  /**
+   *
+   * @param event
+   * @returns {*|Promise}
+   */
+  destroyEvent(event){
+    const Event = this.getModel('Event')
+    return Event.destroy({
+      where: {
+        id: event.id
+      }
+    })
   }
 }
 

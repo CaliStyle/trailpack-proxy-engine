@@ -4,6 +4,7 @@
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const fs = require('fs')
+const Model = require('trails/model')
 // const lib = require('../lib')
 
 const packs = [
@@ -60,7 +61,27 @@ if ( SERVER == 'express' ) {
 }
 
 const App = {
-  api: require('../api'),
+  api: {
+    models: {
+      Event: require('../api/models/Event'),
+      Item: class Item extends Model {
+        static config(app, Sequelize) {
+          return {
+            options: {}
+          }
+        }
+        static schema(app, Sequelize) {
+          return {
+            name: {
+              type: Sequelize.STRING,
+              allowNull: false
+            }
+          }
+        }
+      }
+    },
+    services: require('../api/services')
+  },
   pkg: {
     name: 'trailpack-proxy-engine-test',
     version: '1.0.0'
