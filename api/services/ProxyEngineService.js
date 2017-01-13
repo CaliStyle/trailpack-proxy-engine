@@ -4,6 +4,7 @@
 const Service = require('trails/service')
 const _ = require('lodash')
 const Errors = require('proxy-engine-errors')
+const EVENT_SUBSCRIBER_STATUS = require('../utils/enums').EVENT_SUBSCRIBER_STATUS
 /**
  * @module ProxyEngineService
  * @description Global Proxy Engine Service
@@ -51,27 +52,52 @@ module.exports = class ProxyEngineService extends Service {
    * @returns {*}
    */
   subscribe(name, type, func){
+    const self = this
     const tryCatch = function (type, data) {
       try {
         func(type, data)
       }
       catch (err){
-        console.log(err)
         const event = {
           object: type.split('.')[0],
           type: type,
           data: data
         }
-        this.subscriptionFailure(event, name)
+        return self.subscriptionFailure(event, name, err.toString())
       }
     }
     return this.app.proxyEngine.pubSub.subscribe(type, tryCatch)
   }
   // TODO find or create event and create EventSubscriber
-  subscriptionFailure(event, name){
-    // return this.createEvent(event, {
-    //   include
-    // })
+  subscriptionFailure(event, name, err){
+    let resEvent
+    let resSubscriber
+    return this.resolveEvent(event)
+      .then(event => {
+        resEvent = event
+        return this.resolveEventSubscriber({
+          event_id: resEvent.id,
+          name: name,
+          response: err
+        })
+      })
+      .then(eventSubscriber => {
+        resSubscriber = eventSubscriber
+        return resEvent.hasSubscribers([resSubscriber])
+      })
+      .then((result) => {
+        if (result) {
+          resSubscriber.last_attempt = new Date()
+          resSubscriber.status = EVENT_SUBSCRIBER_STATUS.PENDING
+          return resSubscriber.increment('attempts')
+        }
+        else {
+          return resEvent.addSubscriber(resSubscriber)
+        }
+      })
+      .then(eventSubcriber => {
+        return resSubscriber
+      })
   }
 
   /**
@@ -88,9 +114,65 @@ module.exports = class ProxyEngineService extends Service {
    * @param event
    * @returns {event}
    */
-  createEvent(event, options){
+  resolveEvent(event, options){
     const Event = this.getModel('Event')
-    return Event.create(event, options)
+    if (event instanceof Event.Instance){
+      return Promise.resolve(event)
+    }
+    return Event.sequelize.transaction(t => {
+      if (event.id) {
+        return Event.findById(event.id, options)
+      }
+      else if (event.request && event.request !== ''){
+        return Event.find({
+          where: {
+            request: event.request
+          }
+        }, options)
+      }
+      else if (_.isString(event) || _.isNumber(event)){
+        return Event.findById(event.id, options)
+      }
+      else {
+        return Event.create(event, options)
+      }
+    })
+  }
+
+  /**
+   *
+   * @param eventSubscriber
+   * @param options
+   * @returns {*}
+   */
+  resolveEventSubscriber(eventSubscriber, options) {
+    const EventSubscriber = this.getModel('EventSubscriber')
+    if (eventSubscriber instanceof EventSubscriber.Instance){
+      return Promise.resolve(eventSubscriber)
+    }
+    return EventSubscriber.sequelize.transaction(t => {
+      if (eventSubscriber.id) {
+        return EventSubscriber.findById(eventSubscriber.id, options)
+      }
+      else if (eventSubscriber.event_id && eventSubscriber.name){
+        return EventSubscriber.find({
+          where: {
+            event_id: eventSubscriber.event_id,
+            name: eventSubscriber.name
+          }
+        })
+          .then(resSubscriber => {
+            if (!resSubscriber) {
+              return EventSubscriber.create(eventSubscriber)
+            }
+            return resSubscriber
+          })
+      }
+      else {
+        const err = new Error('Event Subscriber not able to resolve')
+        return Promise.reject(err)
+      }
+    })
   }
 
   /**

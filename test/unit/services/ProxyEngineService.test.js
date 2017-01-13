@@ -9,7 +9,7 @@ describe('ProxyEngineService', () => {
     assert(global.app.api.services['ProxyEngineService'])
   })
   it('should create event', (done) => {
-    global.app.services.ProxyEngineService.createEvent(
+    global.app.services.ProxyEngineService.resolveEvent(
       {
         object: 'user',
         data: {
@@ -54,6 +54,25 @@ describe('ProxyEngineService', () => {
     try {
       global.app.services.ProxyEngineService.unsubscribe(token)
       done()
+    }
+    catch (err) {
+      done(err)
+    }
+  })
+  it('should handle event subscription err', (done) => {
+    try {
+      token = global.app.services.ProxyEngineService.subscribe('test3', 'hello', function( msg, data ) {
+        console.log('SUBSCRIBED:', msg, data)
+        assert.equal(msg, 'hello')
+        assert.equal(data.hello, 'world')
+        if (msg == 'hello') {
+          throw new Error('I broke')
+        }
+      })
+      global.app.services.ProxyEngineService.publish('hello', {hello: 'world'})
+      setTimeout(function(){
+        done()
+      }, 100)
     }
     catch (err) {
       done(err)
