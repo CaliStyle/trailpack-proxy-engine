@@ -18,10 +18,38 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
 
-Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the event.  If the subscriber fails to consume, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
+Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
 
-## Why?
+Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. (TODO)
 
+## Events
+Proxy Engine events are contained into __two__ base categories: Instance, Global.
+
+### Instance Events
+Instance Events are events that __only a single instance__ in a cluster must deal with. The overwhelming majority of events fall into this category. Mostly, database events, service events etc.
+
+### Global Events
+Global Events are events that __every instance__ in a cluster must respond to. Very few events fall into this category. Mostly, global settings changes, plugin updates, notifications, etc. 
+
+Events make it easy to extend functionality without having to edit or change the core of any Proxy Engine Module.
+
+### Subscribing to Events
+
+Subscribe takes three arguments
+* CallAgainLocation {String} - The location of the Callback function in dot notation eg. `proxyCart.config.subscribers.user.created`. This is used in the event the first event fails.
+* EventName {String} - The name of the event to subscribe to eg. `user.created`
+* Callback {Function} - The function to execute when this event happens. All Callbacks must be Async if you want them to be able to reattempt on failure.
+```
+// From some service/controller in your app
+const ProxyEngineService = this.app.services.ProxyEngineService
+const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', callback)
+```
+
+### Removing a subscription from an Event
+```
+   // continued from above
+   ProxyEngineService.unsubscribe(token)
+```
 
 ## Dependencies
 ### Supported ORMs

@@ -35,6 +35,8 @@ module.exports = class ProxyEngineService extends Service {
     return Model.count(criteria, modelOptions)
   }
 
+  // TODO handle INSTANCE or GLOBAL events
+
   /**
    * Publish into proxyEngine PubSub
    * @param type
@@ -68,7 +70,14 @@ module.exports = class ProxyEngineService extends Service {
     }
     return this.app.proxyEngine.pubSub.subscribe(type, tryCatch)
   }
-  // TODO find or create event and create EventSubscriber
+
+  /**
+   *
+   * @param event
+   * @param name
+   * @param err
+   * @returns {Promise.<TResult>}
+   */
   subscriptionFailure(event, name, err){
     let resEvent
     let resSubscriber
@@ -96,7 +105,7 @@ module.exports = class ProxyEngineService extends Service {
         }
       })
       .then(eventSubcriber => {
-        return resSubscriber
+        return resSubscriber.reload()
       })
   }
 

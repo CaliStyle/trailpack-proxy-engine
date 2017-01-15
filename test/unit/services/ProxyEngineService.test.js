@@ -72,7 +72,7 @@ describe('ProxyEngineService', () => {
       global.app.services.ProxyEngineService.publish('hello', {hello: 'world'})
       setTimeout(function(){
         done()
-      }, 100)
+      }, 50)
     }
     catch (err) {
       done(err)
