@@ -21,7 +21,7 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 
 Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
 
-Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. (TODO)
+Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. (TODO example)
 
 ## Events
 Proxy Engine events are contained into __two__ base categories: Instance, Global.
@@ -35,7 +35,6 @@ Global Events are events that __every instance__ in a cluster must respond to. V
 Events make it easy to extend functionality without having to edit or change the core of any Proxy Engine Module.
 
 ### Subscribing to Events
-
 Subscribe takes three arguments
 * CallAgainLocation {String} - The location of the Callback function in dot notation eg. `tasks.User.Created`. This is used in the event the first event fails.
 * EventName {String} - The name of the event to subscribe to eg. `user.created`
@@ -56,8 +55,12 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
 Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
 TODO example
 
+## Tasks
+While event functions respond to events, tasks initiate functions on a schedule.
+
 ### Creating Task functions
-TODO
+Create tasks in the `/api/tasks` directroy and initiate them on load using `/config/tasks.js`
+TODO example
 
 ## Dependencies
 ### Supported ORMs
