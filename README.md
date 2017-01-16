@@ -15,6 +15,7 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
 - [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System
 - [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System
+- [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
 
