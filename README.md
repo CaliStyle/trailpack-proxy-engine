@@ -38,7 +38,7 @@ Events make it easy to extend functionality without having to edit or change the
 Subscribe takes three arguments
 * CallAgainLocation {String} - The location of the Callback function in dot notation eg. `proxyCart.config.subscribers.user.created`. This is used in the event the first event fails.
 * EventName {String} - The name of the event to subscribe to eg. `user.created`
-* Callback {Function} - The function to execute when this event happens. All Callbacks must be Async if you want them to be able to reattempt on failure.
+* Callback {Function} - The function to execute when this event happens. Currently, all Callbacks must be synchronous if you want them to be able to reattempt on failure.
 ```
 // From some service/controller in your app
 const ProxyEngineService = this.app.services.ProxyEngineService

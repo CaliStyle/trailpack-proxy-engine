@@ -36,14 +36,14 @@ module.exports = class ProxyEngineService extends Service {
   }
 
   // TODO handle INSTANCE or GLOBAL events
-
   /**
    * Publish into proxyEngine PubSub
    * @param type
    * @param data
+   * @param global
    * @returns {*}
    */
-  publish(type, data) {
+  publish(type, data, global) {
     return this.app.proxyEngine.pubSub.publish(type, data)
   }
 
