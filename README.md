@@ -37,7 +37,7 @@ Events make it easy to extend functionality without having to edit or change the
 ### Subscribing to Events
 
 Subscribe takes three arguments
-* CallAgainLocation {String} - The location of the Callback function in dot notation eg. `proxyCart.config.subscribers.user.created`. This is used in the event the first event fails.
+* CallAgainLocation {String} - The location of the Callback function in dot notation eg. `tasks.User.Created`. This is used in the event the first event fails.
 * EventName {String} - The name of the event to subscribe to eg. `user.created`
 * Callback {Function} - The function to execute when this event happens. Currently, all Callbacks must be synchronous if you want them to be able to reattempt on failure.
 ```
@@ -51,6 +51,13 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
    // continued from above
    ProxyEngineService.unsubscribe(token)
 ```
+
+### Creating Event functions
+Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
+TODO example
+
+### Creating Task functions
+TODO
 
 ## Dependencies
 ### Supported ORMs
