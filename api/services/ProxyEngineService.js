@@ -41,17 +41,26 @@ module.exports = class ProxyEngineService extends Service {
    * @param type
    * @param data
    * @param options
-   * @returns {*}
+   * @returns {Promise.<T>}
    */
   publish(type, data, options) {
-    const event = this.app.proxyEngine.pubSub.publish(type, data)
-
-    // If this needs to be auto saved, save and continue immediately.
-    if (this.app.config.proxyEngine.auto_save || (options && options.save)) {
-      this.resolveEvent(data)
-    }
-
-    return event
+    return new Promise((resolve, resject) => {
+      const event = this.app.proxyEngine.pubSub.publish(type, data)
+      // If this needs to be auto saved, save and continue immediately.
+      if (this.app.config.proxyEngine.auto_save || (options && options.save)) {
+        this.resolveEvent(data)
+          .then(resEvent => {
+            return resolve(event)
+          })
+          .catch(err => {
+            this.app.log.debug(err)
+            return resolve(event)
+          })
+      }
+      else {
+        return resolve(event)
+      }
+    })
   }
 
   /**
