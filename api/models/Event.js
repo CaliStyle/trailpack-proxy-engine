@@ -57,6 +57,10 @@ module.exports = class Event extends Model {
         object: {
           type: Sequelize.STRING
         },
+        // The Model or Object ID
+        object_id: {
+          type: Sequelize.STRING
+        },
         // The data from populated model
         data: helpers.JSONB('event', app, Sequelize, 'data', {
           defaultValue: {}
