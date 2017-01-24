@@ -18,6 +18,7 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
+  * [Stripe.com Payment Processor](https://github.com/CaliStyle/proxy-generics-stripe)
 
 Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
 
