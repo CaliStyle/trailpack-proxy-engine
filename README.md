@@ -13,6 +13,7 @@ The goals of Proxy Engine is to be a free form scaffold that focuses on modern e
 Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing
 - [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
+  * [Proxy-Cart-Countries](https://github.com/calistyle/trailpack-proxy-cart-countries) Default Tax Rate Provider and Shipping Zones validator.
 - [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System
 - [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System
 - [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network
