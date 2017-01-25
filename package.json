@@ -20,7 +20,7 @@
     "trailjs"
   ],
   "dependencies": {
-    "joi": "^9.0.4",
+    "joi": "^10.2.0",
     "proxy-engine-errors": "^1.0.1",
     "proxy-engine-helpers": "^1.0.1",
     "pubsub-js": "^1.5.4",
