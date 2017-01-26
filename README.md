@@ -23,6 +23,8 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
   * [GoShippo.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shippo)
   * [Shipstation.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shipstation)
   * [Taxjar.com Tax Processor](https://github.com/CaliStyle/proxy-generics-taxjar)
+  * [Mandrill Email Provider](https://github.com/CaliStyle/proxy-generics-mandrill)
+  * [Gcloud Data Store Provider](https://github.com/CaliStyle/proxy-generics-gcloud)
 
 Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
 
