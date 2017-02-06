@@ -64,7 +64,7 @@ module.exports = class ProxyEngineService extends Service {
   }
 
   /**
-   *
+   * @param name
    * @param type
    * @param func
    * @returns {*}

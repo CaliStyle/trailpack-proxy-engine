@@ -6,9 +6,13 @@
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
 Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexibility and speed of [Trails.js](http://trailsjs.io) as a backend framework.
-This node.js system is an event management engine made for plugins from your friends at [Cali Style](https://cali-style.com).
 
-The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. 
+This node.js system is an event management system and loader engine made for plugins from your friends at [Cali Style](https://cali-style.com).
+
+The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. It marshals three main features:
+- Events (Publish, Subscribe, ReTry)
+- Tasks
+- Loaders
 
 Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing
@@ -26,12 +30,17 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
   * [Mandrill Email Provider](https://github.com/CaliStyle/proxy-generics-mandrill)
   * [Gcloud Data Store Provider](https://github.com/CaliStyle/proxy-generics-gcloud)
   * [Google Maps Geolocation Provider](https://github.com/calistyle/proxy-generics-google-maps)
+  * [Cloudinary Image Provider](https://github.com/calistyle/proxy-generics-cloudinary)
 
 Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
 
-Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. (TODO example)
+Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. 
 
-## Events
+```
+(TODO example)
+```
+
+## Events (Publish, Subscribe, ReTry)
 Proxy Engine events are contained into __two__ base categories: Instance, Global.
 
 ### Instance Events
@@ -61,14 +70,32 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
 
 ### Creating Event functions
 Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
+
+```
 TODO example
+```
+
+Events should either succeed and return a value or they should throw an error which will trigger a retry.
 
 ## Tasks
 While event functions respond to events, tasks initiate functions on a schedule.
 
 ### Creating Task functions
-Create tasks in the `/api/tasks` directroy and initiate them on load using `/config/tasks.js`
+Create tasks in the `/api/tasks` directory and initiate them on load using `/config/tasks.js`
+
+```
 TODO example
+```
+
+## Loaders
+Loaders are environment specific functions. A common use of a loader is a micro-service or a worker environment.
+
+### Creating Loader functions
+Create loaders in the `/api/loaders` directory
+
+```
+TODO example
+```
 
 ## Dependencies
 ### Supported ORMs
