@@ -24,6 +24,7 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
   * [Stripe.com Payment Processor](https://github.com/CaliStyle/proxy-generics-stripe)
+  * [Authorize.net Payment Processor](https://github.com/CaliStyle/proxy-generics-authorize.net)
   * [GoShippo.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shippo)
   * [Shipstation.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shipstation)
   * [Taxjar.com Tax Processor](https://github.com/CaliStyle/proxy-generics-taxjar)
