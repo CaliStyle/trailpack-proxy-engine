@@ -1,4 +1,5 @@
 exports.models = require('./models')
 exports.services = require('./services')
-exports.tasks = require('./tasks')
+exports.crons = require('./crons')
 exports.events = require('./events')
+exports.tasks = require('./tasks')
