@@ -106,7 +106,31 @@ const App = {
     },
     web: web,
     // Proxy Generics
-    proxyGenerics: {}
+    proxyGenerics: {},
+    proxyEngine: {
+      live_mode: true,
+      auto_save: false,
+
+      crons_config: {
+        type: 'cron',
+        profiles: {
+          testProfile: {
+            tasks: ['TestCron']
+          },
+          otherProfile: {
+            tasks: ['OtherTestTask']
+          }
+        },
+        exchange: 'my-test-exchange-name'
+      },
+      events_config: {
+        type: 'event'
+      },
+      tasks_config: {
+        type: 'task'
+      },
+      worker: 'testProfile'
+    }
   }
 }
 const dbPath = __dirname + './test.sqlite'
