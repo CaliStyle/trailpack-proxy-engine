@@ -14,5 +14,6 @@ module.exports = class onTestEvent extends Event {
   }
   test() {
     // console.log('I WAS TESTED')
+    console.log('I WAS TESTED',!!this.app)
   }
 }
