@@ -29,19 +29,20 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    * Adds Routes, Policies, and Agenda
    */
   configure () {
-    let cronConfig = this.app.config.proxyEngine.crons_config
+
+    const cronConfig = this.app.config.proxyEngine.crons_config
     const cronProfile = getWorkerProfile(cronConfig)
 
     this.app.crons = new Client(this.app, null, cronConfig.exchangeName)
     utils.registerCrons(cronProfile, this.app, null)
 
-    let eventConfig = this.app.config.proxyEngine.events_config
+    const eventConfig = this.app.config.proxyEngine.events_config
     const eventProfile = getWorkerProfile(eventConfig)
 
     this.app.events = new Client(this.app, null, eventConfig.exchangeName)
     utils.registerEvents(eventProfile, this.app, null)
 
-    let taskConfig = this.app.config.proxyEngine.tasks_config
+    const taskConfig = this.app.config.proxyEngine.tasks_config
     const taskProfile = getWorkerProfile(taskConfig)
 
     this.app.tasks = new Client(this.app, null, taskConfig.exchangeName)
@@ -52,6 +53,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
     this.app.api.tasks = this.app.api.tasks || {}
 
     return Promise.all([
+      lib.ProxyEngine.configure(this.app),
       lib.ProxyEngine.addPolicies(this.app),
       lib.ProxyEngine.addRoutes(this.app),
       lib.ProxyEngine.copyDefaults(this.app),
@@ -66,7 +68,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    */
   initialize () {
     return Promise.all([
-      lib.ProxyEngine.init(this.app),
+      // lib.ProxyEngine.init(this.app),
       lib.ProxyEngine.streamSequelize(this.app)
     ])
   }
@@ -96,6 +98,6 @@ function getWorkerProfile(typeConfig) {
   return typeConfig.profiles[profileName]
 }
 
-exports.Cron = lib.Cron
-exports.Event = lib.Event
-exports.Task = lib.Task
+module.exports.Cron = lib.Cron
+module.exports.Event = lib.Event
+module.exports.Task = lib.Task

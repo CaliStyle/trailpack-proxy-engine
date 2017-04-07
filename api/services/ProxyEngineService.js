@@ -44,6 +44,7 @@ module.exports = class ProxyEngineService extends Service {
    * @returns {Promise.<T>}
    */
   publish(type, data, options) {
+    // console.log('PUBLISHING', type, data)
     return new Promise((resolve, resject) => {
       const event = this.app.proxyEngine.pubSub.publish(type, data)
       // If this needs to be auto saved, save and continue immediately.
