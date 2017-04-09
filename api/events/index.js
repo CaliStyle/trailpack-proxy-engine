@@ -1,1 +1,0 @@
-exports.onTest = require('./onTest')

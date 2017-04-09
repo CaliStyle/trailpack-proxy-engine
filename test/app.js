@@ -5,6 +5,7 @@ const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const fs = require('fs')
 const Model = require('trails/model')
+const Event = require('../').Event
 // const lib = require('../lib')
 
 const packs = [
@@ -77,6 +78,20 @@ const App = {
               allowNull: false
             }
           }
+        }
+      }
+    },
+    events: {
+      onTest: class onTestEvent extends Event {
+        subscribe() {
+          console.log('I WAS Subscribed', !!this.app)
+        }
+        test() {
+          console.log('I WAS TESTED', !!this.app)
+          this.test2()
+        }
+        test2() {
+          console.log('I WAS TESTED TOO', !!this.app)
         }
       }
     },

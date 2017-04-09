@@ -35,12 +35,12 @@ module.exports = class Event extends Model {
              * @param models
              */
             associate: (models) => {
-              models.Event.hasMany(models.EventSubscriber, {
-                as: 'subscribers',
-                foreignKey: 'event_id',
-                through: null,
-                onDelete: 'CASCADE'
-              })
+              // models.Event.hasMany(models.EventSubscriber, {
+              //   as: 'subscribers',
+              //   // foreignKey: 'event_id',
+              //   through: null,
+              //   onDelete: 'CASCADE'
+              // })
             }
           }
         }
@@ -57,12 +57,12 @@ module.exports = class Event extends Model {
         object: {
           type: Sequelize.STRING
         },
-        // The Model or Object ID
+        // The Model Object ID
         object_id: {
-          type: Sequelize.STRING
+          type: Sequelize.INTEGER
         },
         // The data from populated model
-        data: helpers.JSONB('event', app, Sequelize, 'data', {
+        data: helpers.JSONB('Event', app, Sequelize, 'data', {
           defaultValue: {}
         }),
         // The count of pending webhooks

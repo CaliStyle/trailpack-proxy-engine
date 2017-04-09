@@ -15,16 +15,17 @@ module.exports = class EventSubscriber extends Model {
         underscored: true
       },
       classMethods: {
-        EVENT_SUBSCRIBER_STATUS: EVENT_SUBSCRIBER_STATUS
+        EVENT_SUBSCRIBER_STATUS: EVENT_SUBSCRIBER_STATUS,
         /**
          * Associate the Model
          * @param models
          */
-        // associate: (models) => {
-        //   models.EventSubscriber.belongsTo(models.Event, {
-        //     // onDelete: 'CASCADE'
-        //   })
-        // }
+        associate: (models) => {
+          models.EventSubscriber.belongsTo(models.Event, {
+            // onDelete: 'CASCADE'
+            // unique: 'subscriberUniqueKey'
+          })
+        }
       }
     }
     return config
@@ -33,14 +34,14 @@ module.exports = class EventSubscriber extends Model {
   static schema (app, Sequelize) {
     const schema = {
       // The event ID this is bound too.
-      event_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Event',
-          key: 'id'
-        },
-        unique: 'subscriberUniqueKey'
-      },
+      // event_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: 'Event',
+      //     key: 'id'
+      //   },
+      //   unique: 'subscriberUniqueKey'
+      // },
       // request: {
       //   type: Sequelize.STRING,
       //   references: {
