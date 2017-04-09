@@ -35,12 +35,12 @@ module.exports = class Event extends Model {
              * @param models
              */
             associate: (models) => {
-              // models.Event.hasMany(models.EventSubscriber, {
-              //   as: 'subscribers',
-              //   // foreignKey: 'event_id',
-              //   through: null,
-              //   onDelete: 'CASCADE'
-              // })
+              models.Event.hasMany(models.EventSubscriber, {
+                as: 'subscribers',
+                // foreignKey: 'event_id',
+                through: null,
+                onDelete: 'CASCADE'
+              })
             }
           }
         }

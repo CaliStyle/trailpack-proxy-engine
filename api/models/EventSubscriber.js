@@ -36,20 +36,20 @@ module.exports = class EventSubscriber extends Model {
       // The event ID this is bound too.
       // event_id: {
       //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: 'Event',
-      //     key: 'id'
-      //   },
+      //   // references: {
+      //   //   model: 'Event',
+      //   //   key: 'id'
+      //   // },
       //   unique: 'subscriberUniqueKey'
       // },
-      // request: {
-      //   type: Sequelize.STRING,
-      //   references: {
-      //     model: 'Event',
-      //     key: 'request'
-      //   },
-      //   unique: 'subscriberUniqueKey'
-      // },
+      request: {
+        type: Sequelize.STRING,
+        // references: {
+        //   model: 'Event',
+        //   key: 'request'
+        // },
+        unique: 'subscriberUniqueKey'
+      },
       // The name of the subscriber in dot syntax eg. proxyCart.subscribers.new.customer
       name: {
         type: Sequelize.STRING,
