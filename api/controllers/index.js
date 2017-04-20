@@ -1,0 +1,1 @@
+exports.EventController = require('./EventController')
