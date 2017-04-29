@@ -65,6 +65,10 @@ module.exports = class Event extends Model {
         data: helpers.JSONB('Event', app, Sequelize, 'data', {
           defaultValue: {}
         }),
+        // A human readable message in markdown
+        message: {
+          type: Sequelize.TEXT
+        },
         // The count of pending webhooks
         pending_attempts: {
           type: Sequelize.INTEGER,
