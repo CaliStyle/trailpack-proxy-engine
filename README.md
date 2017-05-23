@@ -5,7 +5,7 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
-Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexibility and speed of [Trails.js](http://trailsjs.io) as a backend framework.
+Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexibility and speed ofenvironments](http://trailsjs.io) as a backend framework.
 
 This node.js system is an event management system and loader engine made for plugins from your friends at [Cali Style](https://cali-style.com).
 
@@ -55,17 +55,40 @@ Events make it easy to extend functionality without having to edit or change the
 
 ### Subscribing to Events
 Subscribe takes three arguments
-* CallAgainLocation {String} - The location of the Callback function in dot notation eg. `tasks.User.Created`. This is used in the event the first event fails.
-* EventName {String} - The name of the event to subscribe to eg. `user.created`
-* Callback {Function} - The function to execute when this event happens. Currently, all Callbacks must be synchronous if you want them to be able to reattempt on failure.
+* CallAgainLocation <string> - The location of the Callback function in dot notation eg. `onCustomer.created`. This is used in the event the first event fails.
+* EventName <string> - The name of the event to subscribe to eg. `customer.created`
+* Callback {Function (msg, data)} - The function to execute when this event happens.
+
+Proxy Engine will automatically subscribe your events if you provide a `subscribe` method in your event handler.
+
+```js
+// api/events/onTestEvent.js
+
+class onTestEvent extends Event {
+  // This function is called during the Configuration of the trailpack
+  subscribe() {
+    this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
+    this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
+  }
+
+  test() {
+    // This function will be run when a `test` event is published
+  }
+  test2() {
+    // This function will be run when a `test2` event is published
+  }
+}
 ```
+Alternatively, you can subscribe to an event in a service or a controller.
+```js
 // From some service/controller in your app
 const ProxyEngineService = this.app.services.ProxyEngineService
+// Create a token that you can use later.
 const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', callback)
 ```
 
 ### Removing a subscription from an Event
-```
+```js
    // continued from above
    ProxyEngineService.unsubscribe(token)
 ```
@@ -73,30 +96,52 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
 ### Creating Event functions
 Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
 
-```
-TODO example
+```js
+// api/events/onTestEvent.js
+module.exports = class onTestEvent extends Event {
+  // This function is called during the Configuration of the trailpack
+  subscribe() {
+    this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
+    this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
+  }
+
+  test() {
+    // This function will be run when a `test` event is published
+  }
+  test2() {
+    // This function will be run when a `test2` event is published
+  }
+}
 ```
 
-Events should either succeed and return a value or they should throw an error which will trigger a retry.
+Events should either succeed and return a value or they should throw an error which will trigger a retry on the burn down schedule.
 
 ## Tasks
-While event functions respond to events, tasks initiate functions on a schedule.
+While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment.
 
 ### Creating Task functions
-Create tasks in the `/api/tasks` directory and initiate them on load using `/config/tasks.js`
+Create tasks in the `/api/tasks` directory. 
 
 ```
 TODO example
 ```
 
-## Loaders
-Loaders are environment specific functions. A common use of a loader is a micro-service or a worker environment.
+## Crons
+Crons are environment specific functions that run on a schedule. 
 
-### Creating Loader functions
-Create loaders in the `/api/loaders` directory
+### Creating Crons
+Create crons in the `/api/crons` directory. Crons use [node-schedule](https://www.npmjs.com/package/node-schedule) and are configured per worker profile.
 
-```
-TODO example
+```js
+// api/crons/onTestCron
+module.exports = class onTestCron extends Cron {
+  test() {
+    console.log('I have been scheduled')
+    const j = this.schedule.scheduleJob('42 * * * *', () => {
+      console.log('The answer to life, the universe, and everything!')
+    })
+  }
+}
 ```
 
 ## Dependencies
@@ -133,6 +178,54 @@ module.exports = {
     require('trailpack-proxy-engine')
     // ... other proxy-packs
   ]
+}
+```
+
+```js
+// config/proxyEngine.js
+module.exports = {
+  // If the app is in live mode
+  live_mode: true,
+  // If every event should be saved automatically
+  auto_save: false,
+  // Configure Crons
+  crons_config: {
+    type: 'cron',
+    // The profiles that are able to run specified crons
+    profiles: {
+      // If the worker matches `testProfile`, then it's crons can run
+      testProfile: {
+        crons: ['onTestCron.test']
+      },
+      // If the worker matches `otherProfile`, then it's crons can run
+      otherProfile: {
+        crons: ['otherTestCron.test']
+      }
+    },
+    exchange: 'my-test-exchange-name'
+  },
+  // Configure Events
+  events_config: {
+    type: 'event'
+  },
+  // Configure Tasks
+  tasks_config: {
+    type: 'task',
+    // The profiles that are able to run specified tasks
+    profiles: {
+      // If the worker matches `testProfile`, then it's tasks can run
+      testProfile: {
+        tasks: ['TestTask']
+      },
+      // If the worker matches `otherProfile`, then it's tasks can run
+      otherProfile: {
+        tasks: ['OtherTestTask']
+      }
+    },
+    exchange: 'my-test-exchange-name'
+  },
+  // The worker env profile for this app
+  worker: 'testProfile'
 }
 ```
 

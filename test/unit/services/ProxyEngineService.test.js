@@ -15,6 +15,7 @@ describe('ProxyEngineService', () => {
         data: {
           email: 'example@example.com'
         },
+        message: 'User Created',
         type: 'user.created'
       }
     )
@@ -77,5 +78,10 @@ describe('ProxyEngineService', () => {
     catch (err) {
       done(err)
     }
+  })
+  it('should handle api.events', (done) => {
+    global.app.services.ProxyEngineService.publish('test', {hello: 'world'})
+    global.app.services.ProxyEngineService.publish('test2', {hello: 'world'})
+    done()
   })
 })

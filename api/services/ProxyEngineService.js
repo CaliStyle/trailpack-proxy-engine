@@ -35,6 +35,29 @@ module.exports = class ProxyEngineService extends Service {
     return Model.count(criteria, modelOptions)
   }
 
+  /**
+   * Paginate Sequelize
+   * @param res
+   * @param count
+   * @param limit
+   * @param offset
+   * @param sort
+   * @returns {*}
+   */
+  paginate(res, count, limit, offset, sort) {
+
+    const pages = Math.ceil(count / limit) == 0 ? 1 : Math.ceil(count / limit)
+    const page = offset == 0 ? 1 : Math.round(offset / limit)
+    res.set('X-Pagination-Total', count)
+    res.set('X-Pagination-Pages', pages)
+    res.set('X-Pagination-Page', page)
+    res.set('X-Pagination-Offset', offset)
+    res.set('X-Pagination-Limit', limit)
+    res.set('X-Pagination-Sort', sort)
+
+    return res
+  }
+
   // TODO handle INSTANCE or GLOBAL events
   /**
    * Publish into proxyEngine PubSub
