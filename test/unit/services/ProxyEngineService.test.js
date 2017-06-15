@@ -84,4 +84,22 @@ describe('ProxyEngineService', () => {
     global.app.services.ProxyEngineService.publish('test2', {hello: 'world'})
     done()
   })
+  it('should do correct pagination', (done) => {
+    const count = 100
+    const offset = 0
+    const limit = 10
+
+    const page = offset == 0 ? 1 : Math.round(offset / limit)
+    assert.equal(page, 1)
+    done()
+  })
+  it('should do correct pagination', (done) => {
+    const count = 100
+    const offset = 100
+    const limit = 10
+
+    const page = offset == 0 ? 1 : Math.round(offset / limit)
+    assert.equal(page, 10)
+    done()
+  })
 })
