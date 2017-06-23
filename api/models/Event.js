@@ -38,7 +38,7 @@ module.exports = class Event extends Model {
               models.Event.hasMany(models.EventSubscriber, {
                 as: 'subscribers',
                 // foreignKey: 'event_id',
-                through: null,
+                // through: null,
                 onDelete: 'CASCADE'
               })
             }
@@ -53,14 +53,18 @@ module.exports = class Event extends Model {
     let schema = {}
     if (app.config.database.orm === 'sequelize') {
       schema = {
-        // The Model or object
+        // The Target Model or object
         object: {
           type: Sequelize.STRING
         },
-        // The Model Object ID
+        // The Target Model Object ID
         object_id: {
           type: Sequelize.INTEGER
         },
+        // The Models/Objects referred to in the event
+        objects: helpers.JSONB('Event', app, Sequelize, 'objects', {
+          defaultValue: []
+        }),
         // The data from populated model
         data: helpers.JSONB('Event', app, Sequelize, 'data', {
           defaultValue: {}
