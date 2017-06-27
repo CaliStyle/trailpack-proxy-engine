@@ -73,6 +73,12 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
     ])
   }
 
+  /**
+   * clear subscriptions
+   */
+  unload() {
+    this.app.proxyEngine.pubSub.clearAllSubscriptions()
+  }
   constructor (app) {
     super(app, {
       config: require('./config'),
