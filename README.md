@@ -105,10 +105,10 @@ module.exports = class onTestEvent extends Event {
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
   }
 
-  test() {
+  test(msg, data) {
     // This function will be run when a `test` event is published
   }
-  test2() {
+  test2(msg, data) {
     // This function will be run when a `test2` event is published
   }
 }
@@ -117,7 +117,7 @@ module.exports = class onTestEvent extends Event {
 Events should either succeed and return a value or they should throw an error which will trigger a retry on the burn down schedule.
 
 ## Tasks
-While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment.
+While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment for example, processing video or any other significant process.
 
 ### Creating Task functions
 Create tasks in the `/api/tasks` directory. 
