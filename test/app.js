@@ -36,8 +36,7 @@ else if (ORM === 'sequelize') {
     stores.sqlitedev = {
       database: 'ProxyEngine',
       host: '127.0.0.1',
-      dialect: 'postgres',
-      username: 'scott'
+      dialect: 'postgres'
     }
   }
   else {
