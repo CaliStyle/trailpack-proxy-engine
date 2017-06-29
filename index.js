@@ -77,7 +77,10 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    * clear subscriptions
    */
   unload() {
-    this.app.proxyEngine.pubSub.clearAllSubscriptions()
+    return Promise.all([
+      lib.ProxyEngine.cancelPubSub(this.app),
+      lib.ProxyEngine.cancelCrons(this.app)
+    ])
   }
   constructor (app) {
     super(app, {
