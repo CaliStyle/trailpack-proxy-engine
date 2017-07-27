@@ -36,6 +36,27 @@ module.exports = class ProxyEngineService extends Service {
   }
 
   /**
+   *
+   * @param str
+   * @returns {*}
+   */
+  jsonCritera(str) {
+    if (!str) {
+      return {}
+    }
+    if (str instanceof Object) {
+      return str
+    }
+    try {
+      str = JSON.parse(str)
+    }
+    catch (err) {
+      str = {}
+    }
+    return str
+  }
+
+  /**
    * Paginate Sequelize
    * @param res
    * @param count
