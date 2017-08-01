@@ -90,12 +90,13 @@ module.exports = class ProxyEngineService extends Service {
    * @returns {Promise.<T>}
    */
   publish(type, data, options) {
+    options = options || {}
     // console.log('PUBLISHING', type, data)
-    return new Promise((resolve, resject) => {
+    return new Promise((resolve, reject) => {
       const event = this.app.proxyEngine.pubSub.publish(type, data)
       // If this needs to be auto saved, save and continue immediately.
-      if (this.app.config.proxyEngine.auto_save || (options && options.save)) {
-        this.resolveEvent(data)
+      if (this.app.config.proxyEngine.auto_save || options.save) {
+        this.resolveEvent(data, { transaction: options.transaction || null})
           .then(resEvent => {
             return resolve(event)
           })
@@ -139,23 +140,30 @@ module.exports = class ProxyEngineService extends Service {
    * @param event
    * @param name
    * @param err
-   * @returns {Promise.<TResult>}
+   * @param options
+   * @returns {Promise.<T>}
    */
-  subscriptionFailure(event, name, err){
-    let resEvent
-    let resSubscriber
-    return this.resolveEvent(event)
-      .then(event => {
-        resEvent = event
+  subscriptionFailure(event, name, err, options){
+    options = options || {}
+    let resEvent, resSubscriber
+
+    return this.resolveEvent(event, {transaction: options.transaction || null})
+      .then(foundEvent => {
+        if (!foundEvent) {
+          // TODO throw err
+        }
+        resEvent = foundEvent
         return this.resolveEventSubscriber({
           event_id: resEvent.id,
           name: name,
           response: err
+        }, {
+          transaction: options.transaction || null
         })
       })
       .then(eventSubscriber => {
         resSubscriber = eventSubscriber
-        return resEvent.hasSubscribers([resSubscriber])
+        return resEvent.hasSubscriber(resSubscriber.id, {transaction: options.transaction || null})
       })
       .then((result) => {
         if (result) {
@@ -164,7 +172,7 @@ module.exports = class ProxyEngineService extends Service {
           return resSubscriber.increment('attempts')
         }
         else {
-          return resEvent.addSubscriber(resSubscriber)
+          return resEvent.addSubscriber(resSubscriber, {transaction: options.transaction || null})
         }
       })
       .then(eventSubcriber => {
@@ -184,29 +192,47 @@ module.exports = class ProxyEngineService extends Service {
   /**
    *
    * @param event
-   * @returns {event}
+   * @param options
+   * @returns {Promise.<T>}
    */
   resolveEvent(event, options){
-    const Event = this.getModel('Event')
+    options = options || {}
+    const Event = this.app.orm['Event']
     if (event instanceof Event.Instance){
       return Promise.resolve(event)
     }
     return Event.sequelize.transaction(t => {
       if (event.id) {
-        return Event.findById(event.id, options)
+        return Event.findById(event.id, {
+          transaction: options.transaction || t
+        })
       }
       else if (event.request && event.request !== ''){
         return Event.find({
           where: {
             request: event.request
           }
-        }, options)
+        }, {
+          transaction: options.transaction || t
+        })
       }
-      else if (_.isString(event) || _.isNumber(event)){
-        return Event.findById(event.id, options)
+      else if (_.isNumber(event)){
+        return Event.findById(event, {
+          transaction: options.transaction || t
+        })
+      }
+      else if (_.isString(event)){
+        return Event.findOne({
+          where: {
+            request: event
+          },
+          transaction: options.transaction || t
+        })
       }
       else {
-        return Event.create(event, options)
+        return Event.create(event, {
+          transaction: options.transaction || t
+        })
       }
     })
   }
@@ -215,27 +241,31 @@ module.exports = class ProxyEngineService extends Service {
    *
    * @param eventSubscriber
    * @param options
-   * @returns {*}
+   * @returns {Promise.<T>}
    */
   resolveEventSubscriber(eventSubscriber, options) {
-    const EventSubscriber = this.getModel('EventSubscriber')
+    options = options || {}
+    const EventSubscriber = this.app.orm['EventSubscriber']
     if (eventSubscriber instanceof EventSubscriber.Instance){
       return Promise.resolve(eventSubscriber)
     }
     return EventSubscriber.sequelize.transaction(t => {
       if (eventSubscriber.id) {
-        return EventSubscriber.findById(eventSubscriber.id, options)
+        return EventSubscriber.findById(eventSubscriber.id, {
+          transaction: options.transaction || t
+        })
       }
       else if (eventSubscriber.event_id && eventSubscriber.name){
-        return EventSubscriber.find({
+        return EventSubscriber.findOne({
           where: {
             event_id: eventSubscriber.event_id,
             name: eventSubscriber.name
-          }
+          },
+          transaction: options.transaction || t
         })
           .then(resSubscriber => {
             if (!resSubscriber) {
-              return EventSubscriber.create(eventSubscriber)
+              return EventSubscriber.create(eventSubscriber, {transaction: options.transaction || t})
             }
             return resSubscriber
           })
@@ -245,19 +275,23 @@ module.exports = class ProxyEngineService extends Service {
         return Promise.reject(err)
       }
     })
+
   }
 
   /**
    *
    * @param event
-   * @returns {*|Promise}
+   * @param options
+   * @returns {Promise.<T>}
    */
-  destroyEvent(event){
+  destroyEvent(event, options){
+    options = options || {}
     const Event = this.getModel('Event')
     return Event.destroy({
       where: {
         id: event.id
-      }
+      },
+      transaction: options.transaction || null
     })
   }
 }
