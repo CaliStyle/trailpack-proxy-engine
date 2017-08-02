@@ -100,10 +100,10 @@ const App = {
           this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
           this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
         }
-        test() {
+        test(msg, data, options) {
           console.log('I WAS TESTED', !!this.app)
         }
-        test2() {
+        test2(msg, data, options) {
           console.log('I WAS TESTED TOO', !!this.app)
         }
       }

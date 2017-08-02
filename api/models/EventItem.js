@@ -14,6 +14,17 @@ module.exports = class EventItem extends Model {
       config = {
         options: {
           underscored: true
+        },
+        classMethods: {
+          /**
+           * Associate the Model
+           * @param models
+           */
+          associate: (models) => {
+            models.EventItem.belongsTo(models.Event, {
+
+            })
+          }
         }
       }
     }

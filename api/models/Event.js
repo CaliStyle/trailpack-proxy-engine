@@ -41,6 +41,12 @@ module.exports = class Event extends Model {
                 // through: null,
                 onDelete: 'CASCADE'
               })
+              models.Event.hasMany(models.EventItem, {
+                as: 'items',
+                foreignKey: 'event_id',
+                // through: null,
+                onDelete: 'CASCADE'
+              })
             }
           }
         }

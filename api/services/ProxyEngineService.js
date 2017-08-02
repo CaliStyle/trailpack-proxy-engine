@@ -91,9 +91,8 @@ module.exports = class ProxyEngineService extends Service {
    */
   publish(type, data, options) {
     options = options || {}
-    // console.log('PUBLISHING', type, data)
     return new Promise((resolve, reject) => {
-      const event = this.app.proxyEngine.pubSub.publish(type, data)
+      const event = this.app.proxyEngine.pubSub.publish(type, data, options)
       // If this needs to be auto saved, save and continue immediately.
       if (this.app.config.proxyEngine.auto_save || options.save) {
         this.resolveEvent(data, { transaction: options.transaction || null})
@@ -230,8 +229,21 @@ module.exports = class ProxyEngineService extends Service {
         })
       }
       else {
+        const items = event.objects || []
+        event.items = items.map(item => {
+          return {
+            object_id: item[0],
+            object: Object.keys(item)[0]
+          }
+        })
         return Event.create(event, {
-          transaction: options.transaction || t
+          transaction: options.transaction || t,
+          include: [
+            {
+              model: this.app.orm['EventItem'],
+              as: 'items'
+            }
+          ]
         })
       }
     })

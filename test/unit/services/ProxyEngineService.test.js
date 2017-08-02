@@ -62,8 +62,8 @@ describe('ProxyEngineService', () => {
   })
   it('should handle event subscription err', (done) => {
     try {
-      token = global.app.services.ProxyEngineService.subscribe('test3', 'hello', function( msg, data ) {
-        console.log('SUBSCRIBED:', msg, data)
+      token = global.app.services.ProxyEngineService.subscribe('test3', 'hello', function( msg, data, options ) {
+        console.log('SUBSCRIBED:', msg, data, options)
         assert.equal(msg, 'hello')
         assert.equal(data.hello, 'world')
         if (msg == 'hello') {
