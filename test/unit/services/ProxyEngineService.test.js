@@ -66,11 +66,13 @@ describe('ProxyEngineService', () => {
         console.log('SUBSCRIBED:', msg, data, options)
         assert.equal(msg, 'hello')
         assert.equal(data.hello, 'world')
+        assert.equal(options.test, 'test')
+
         if (msg == 'hello') {
           throw new Error('I broke')
         }
       })
-      global.app.services.ProxyEngineService.publish('hello', {hello: 'world'})
+      global.app.services.ProxyEngineService.publish('hello', {hello: 'world'}, {test: 'test'})
       setTimeout(function(){
         done()
       }, 50)

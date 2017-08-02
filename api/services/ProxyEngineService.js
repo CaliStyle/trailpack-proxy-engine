@@ -89,22 +89,27 @@ module.exports = class ProxyEngineService extends Service {
    * @param options
    * @returns {Promise.<T>}
    */
+  // TODO Publish event on Commit if transaction is present
   publish(type, data, options) {
     options = options || {}
     return new Promise((resolve, reject) => {
-      const event = this.app.proxyEngine.pubSub.publish(type, data, options)
       // If this needs to be auto saved, save and continue immediately.
       if (this.app.config.proxyEngine.auto_save || options.save) {
         this.resolveEvent(data, { transaction: options.transaction || null})
           .then(resEvent => {
+            // Publish the resulting event
+            const event = this.app.proxyEngine.pubSub.publish(type, resEvent, options)
             return resolve(event)
           })
           .catch(err => {
+            // If an error during resolve Event publish what we have
             this.app.log.debug(err)
+            const event = this.app.proxyEngine.pubSub.publish(type, data, options)
             return resolve(event)
           })
       }
       else {
+        const event = this.app.proxyEngine.pubSub.publish(type, data, options)
         return resolve(event)
       }
     })
@@ -118,9 +123,9 @@ module.exports = class ProxyEngineService extends Service {
    */
   subscribe(name, type, func){
     const self = this
-    const tryCatch = function (type, data) {
+    const tryCatch = function (type, data, options) {
       try {
-        func(type, data)
+        func(type, data, options)
       }
       catch (err){
         const event = {
@@ -128,7 +133,7 @@ module.exports = class ProxyEngineService extends Service {
           type: type,
           data: data
         }
-        return self.subscriptionFailure(event, name, err.toString())
+        return self.subscriptionFailure(event, name, err.toString(), options)
       }
     }
     return this.app.proxyEngine.pubSub.subscribe(type, tryCatch)
@@ -144,8 +149,8 @@ module.exports = class ProxyEngineService extends Service {
    */
   subscriptionFailure(event, name, err, options){
     options = options || {}
-    let resEvent, resSubscriber
 
+    let resEvent, resSubscriber
     return this.resolveEvent(event, {transaction: options.transaction || null})
       .then(foundEvent => {
         if (!foundEvent) {
@@ -203,20 +208,37 @@ module.exports = class ProxyEngineService extends Service {
     return Event.sequelize.transaction(t => {
       if (event.id) {
         return Event.findById(event.id, {
+          include: [
+            {
+              model: this.app.orm['EventItem'],
+              as: 'objects'
+            }
+          ],
           transaction: options.transaction || t
         })
       }
       else if (event.request && event.request !== ''){
-        return Event.find({
+        return Event.findOne({
           where: {
             request: event.request
-          }
-        }, {
+          },
+          include: [
+            {
+              model: this.app.orm['EventItem'],
+              as: 'objects'
+            }
+          ],
           transaction: options.transaction || t
         })
       }
       else if (_.isNumber(event)){
         return Event.findById(event, {
+          include: [
+            {
+              model: this.app.orm['EventItem'],
+              as: 'objects'
+            }
+          ],
           transaction: options.transaction || t
         })
       }
@@ -225,10 +247,17 @@ module.exports = class ProxyEngineService extends Service {
           where: {
             request: event
           },
+          include: [
+            {
+              model: this.app.orm['EventItem'],
+              as: 'objects'
+            }
+          ],
           transaction: options.transaction || t
         })
       }
       else {
+        // Transform objects
         const items = event.objects || []
         event.objects = items.map(item => {
           const model = Object.keys(item)[0]
@@ -243,13 +272,13 @@ module.exports = class ProxyEngineService extends Service {
           }
         })
         return Event.create(event, {
-          transaction: options.transaction || t,
           include: [
             {
               model: this.app.orm['EventItem'],
               as: 'objects'
             }
-          ]
+          ],
+          transaction: options.transaction || t
         })
       }
     })

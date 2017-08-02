@@ -49,7 +49,7 @@ Proxy Engine events are contained into __two__ base categories: Instance, Global
 Instance Events are events that __only a single instance__ in a cluster must deal with. The overwhelming majority of events fall into this category. Mostly, database events, service events etc.
 
 ### Global Events
-Global Events are events that __every instance__ in a cluster must respond to. Very few events fall into this category. Mostly, global settings changes, plugin updates, notifications, etc. 
+Global Events are events that __every instance__ in a cluster must respond to. Very few events fall into this category. Mostly, global settings changes, plugin updates, notifications, etc. This requires redis.
 
 Events make it easy to extend functionality without having to edit or change the core of any Proxy Engine Module.
 
@@ -71,10 +71,10 @@ class onTestEvent extends Event {
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
   }
 
-  test() {
+  test(msg, data, options) {
     // This function will be run when a `test` event is published
   }
-  test2() {
+  test2(msg, data, options) {
     // This function will be run when a `test2` event is published
   }
 }
@@ -105,10 +105,10 @@ module.exports = class onTestEvent extends Event {
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
   }
 
-  test(msg, data) {
+  test(msg, data, options) {
     // This function will be run when a `test` event is published
   }
-  test2(msg, data) {
+  test2(msg, data, options) {
     // This function will be run when a `test2` event is published
   }
 }
