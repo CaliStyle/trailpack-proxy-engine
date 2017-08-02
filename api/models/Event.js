@@ -42,7 +42,7 @@ module.exports = class Event extends Model {
                 onDelete: 'CASCADE'
               })
               models.Event.hasMany(models.EventItem, {
-                as: 'items',
+                as: 'objects',
                 foreignKey: 'event_id',
                 // through: null,
                 onDelete: 'CASCADE'
@@ -68,9 +68,9 @@ module.exports = class Event extends Model {
           type: Sequelize.INTEGER
         },
         // The Models/Objects referred to in the event
-        objects: helpers.JSONB('Event', app, Sequelize, 'objects', {
-          defaultValue: []
-        }),
+        // objects: helpers.JSONB('Event', app, Sequelize, 'objects', {
+        //   defaultValue: []
+        // }),
         // The data from populated model
         data: helpers.JSONB('Event', app, Sequelize, 'data', {
           defaultValue: {}

@@ -230,10 +230,16 @@ module.exports = class ProxyEngineService extends Service {
       }
       else {
         const items = event.objects || []
-        event.items = items.map(item => {
-          return {
-            object_id: item[0],
-            object: Object.keys(item)[0]
+        event.objects = items.map(item => {
+          const model = Object.keys(item)[0]
+          if (item.object_id && item.object) {
+            return item
+          }
+          else {
+            return {
+              object_id: item[model],
+              object: model
+            }
           }
         })
         return Event.create(event, {
@@ -241,7 +247,7 @@ module.exports = class ProxyEngineService extends Service {
           include: [
             {
               model: this.app.orm['EventItem'],
-              as: 'items'
+              as: 'objects'
             }
           ]
         })
