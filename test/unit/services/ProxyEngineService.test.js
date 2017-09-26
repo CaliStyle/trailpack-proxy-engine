@@ -113,4 +113,52 @@ describe('ProxyEngineService', () => {
     assert.equal(page, 2)
     done()
   })
+  it('should merge includes', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      include: [{ model: 'hello' }]
+    }, {
+      include: [{ model: 'world'}]
+    })
+    assert.equal(newOptions.include.length, 2)
+    assert.equal(newOptions.include[0].model, 'hello')
+    assert.equal(newOptions.include[1].model, 'world')
+    done()
+  })
+  it('should merge order and fix incorrect instances', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      order: [['created_at','ASC']]
+    }, {
+      order: 'updated_at DESC'
+    })
+    assert.equal(newOptions.order.length, 2)
+    done()
+  })
+  it('should merge wheres', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      where: { name: 'hello'}
+    }, {
+      where: { created_at: 'now' }
+    })
+    assert.equal(newOptions.where.name, 'hello')
+    assert.equal(newOptions.where.created_at, 'now')
+    done()
+  })
+  it('should merge limit', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      limit: null
+    }, {
+      limit: 10
+    })
+    assert.equal(newOptions.limit, 10)
+    done()
+  })
+  it('should merge offset', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      offset: null
+    }, {
+      offset: 10
+    })
+    assert.equal(newOptions.offset, 10)
+    done()
+  })
 })

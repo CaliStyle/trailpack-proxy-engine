@@ -81,6 +81,125 @@ module.exports = class ProxyEngineService extends Service {
     return res
   }
 
+  /**
+   *
+   * @param options
+   * @returns {*|{}}
+   */
+  mergeOptionDefaults(...options) {
+    let wheres = {}
+    let limits = null
+    let offsets = null
+    let includes = []
+    let orders = []
+    let newOptions
+
+    for (const option of options) {
+      if (!_.isObject(option)) {
+        throw new Error('Option must be an object, type of option was', typeof option)
+      }
+      includes = this.mergeOptionIncludes(includes, option.include)
+      orders = this.mergeOptionOrders(orders, option.order)
+      wheres = this.mergeOptionWheres(wheres, option.where)
+      limits = this.mergeOptionLimits(limits, option.limit)
+      offsets = this.mergeOptionOffsets(offsets, option.offset)
+    }
+
+    newOptions = {
+      include: includes,
+      order: orders,
+      where: wheres,
+      limit: limits,
+      offset: offsets
+    }
+
+    for (const option of options.reverse()) {
+      newOptions = _.defaults(newOptions, option)
+    }
+    return newOptions
+  }
+
+  /**
+   *
+   * @param defaults
+   * @param overrides
+   * @returns {*|Array}
+   */
+  mergeOptionIncludes(defaults, overrides) {
+    defaults = defaults || []
+    overrides = overrides || []
+    const includes = defaults
+
+    if (!_.isArray(defaults) || !_.isArray(overrides)) {
+      throw new Error('include must be an array')
+    }
+
+    overrides.map(include => {
+      const inIncludes = includes.findIndex(i => i.model == include.model)
+      if (inIncludes !== -1) {
+        includes[inIncludes] = include
+      }
+      else {
+        includes.push(include)
+      }
+    })
+    return includes
+  }
+
+  /**
+   *
+   * @param defaults
+   * @param overrides
+   * @returns {*|Array}
+   */
+
+  mergeOptionOrders(defaults, overrides) {
+    defaults = defaults || []
+    overrides = overrides || []
+
+    if (_.isString(defaults)) {
+      defaults = [defaults.trim().split(' ')]
+    }
+
+    let order = defaults
+
+    if (_.isString(overrides)) {
+      order.push(overrides.trim().split(' '))
+    }
+    else if (_.isArray(overrides)) {
+      order = order.concat(overrides)
+    }
+    else if (_.isObject(overrides)) {
+      order.push([overrides])
+    }
+
+
+    return order // = _.defaultsDeep(order, overrides)
+  }
+
+  mergeOptionWheres(defaults, overrides) {
+    defaults = defaults || {}
+    overrides = overrides || {}
+    const where = _.merge(defaults, overrides)
+    return where
+  }
+
+  mergeOptionOffsets(defaults, overrides) {
+    let offset = defaults
+    if (overrides) {
+      offset = overrides
+    }
+    return offset
+  }
+
+  mergeOptionLimits(defaults, overrides) {
+    let limit = defaults
+    if (overrides) {
+      limit = overrides
+    }
+    return limit
+  }
+
   // TODO handle INSTANCE or GLOBAL events
   /**
    * Publish into proxyEngine PubSub
