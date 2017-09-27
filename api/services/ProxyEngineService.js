@@ -114,9 +114,10 @@ module.exports = class ProxyEngineService extends Service {
     }
 
     for (const option of options.reverse()) {
-      newOptions = _.defaults(newOptions, option)
+      newOptions = _.defaults({}, newOptions, option)
     }
-    return newOptions
+    // console.log('new options', _.omitBy(newOptions, _.isNil))
+    return _.omitBy(newOptions, _.isNil)
   }
 
   /**
@@ -136,7 +137,7 @@ module.exports = class ProxyEngineService extends Service {
 
     overrides.map(include => {
       const inIncludes = includes.findIndex(i => i.model == include.model)
-      if (inIncludes !== -1) {
+      if (inIncludes !== -1 && includes[inIncludes]['as'] == include.as) {
         includes[inIncludes] = include
       }
       else {

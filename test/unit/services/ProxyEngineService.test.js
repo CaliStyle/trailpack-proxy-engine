@@ -124,6 +124,27 @@ describe('ProxyEngineService', () => {
     assert.equal(newOptions.include[1].model, 'world')
     done()
   })
+  it('should merge duplicate includes', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      include: [{ model: 'hello', as: 'world' }]
+    }, {
+      include: [{ model: 'hello', as: 'world' }]
+    })
+    assert.equal(newOptions.include.length, 1)
+    assert.equal(newOptions.include[0].model, 'hello')
+    done()
+  })
+  it('should merge includes with same model', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      include: [{ model: 'hello', as: 'world' }]
+    }, {
+      include: [{ model: 'hello', as: 'planet' }]
+    })
+    assert.equal(newOptions.include.length, 2)
+    assert.equal(newOptions.include[0].model, 'hello')
+    assert.equal(newOptions.include[1].model, 'hello')
+    done()
+  })
   it('should merge order and fix incorrect instances', (done) => {
     const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
       order: [['created_at','ASC']]
@@ -159,6 +180,13 @@ describe('ProxyEngineService', () => {
       offset: 10
     })
     assert.equal(newOptions.offset, 10)
+    done()
+  })
+  it('should merge with unknown variables', (done) => {
+    const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
+      hello: 'world'
+    }, {})
+    assert.equal(newOptions.hello, 'world')
     done()
   })
 })
