@@ -6,14 +6,14 @@
 module.exports = {
   live_mode: true,
   auto_save: false,
+  profile: null,
   crons_config: {
-    type: 'cron'
+
   },
   events_config: {
-    type: 'event'
+
   },
   tasks_config: {
-    type: 'task'
-  },
-  worker: ''
+
+  }
 }

@@ -99,7 +99,7 @@ Create events in the `/api/events` directory and subscribe to them on load using
 ```js
 // api/events/onTestEvent.js
 module.exports = class onTestEvent extends Event {
-  // This function is called during the Configuration of the trailpack
+  // Subscribe Method is called during the Configuration of the trailpack, regardless of worker profile.
   subscribe() {
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
@@ -135,9 +135,14 @@ Create crons in the `/api/crons` directory. Crons use [node-schedule](https://ww
 ```js
 // api/crons/onTestCron
 module.exports = class onTestCron extends Cron {
+  // Schedule Method is called during the Configuration of the trailpack
+  // Schedule method is reserved to automatically do something regardless of profile.
+  schedule() {
+    this.test()
+  }
   test() {
     console.log('I have been scheduled')
-    const j = this.schedule.scheduleJob('42 * * * *', () => {
+    const j = this.scheduler.scheduleJob('42 * * * *', () => {
       console.log('The answer to life, the universe, and everything!')
     })
   }

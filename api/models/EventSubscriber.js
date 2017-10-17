@@ -2,7 +2,7 @@
 
 const Model = require('trails/model')
 const _ = require('lodash')
-const EVENT_SUBSCRIBER_STATUS = require('../utils/enums').EVENT_SUBSCRIBER_STATUS
+const EVENT_SUBSCRIBER_STATUS = require('../../lib/').Enums.EVENT_SUBSCRIBER_STATUS
 /**
  * @module EventSubscriber
  * @description Event Subscriber

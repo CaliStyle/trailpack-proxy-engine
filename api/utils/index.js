@@ -1,1 +1,0 @@
-exports.enums = require('./enums')

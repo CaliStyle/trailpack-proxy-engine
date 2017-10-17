@@ -15,38 +15,50 @@ module.exports = {
   auto_save: process.ENV.AUTO_SAVE || false,
 
   /**
-   * Define worker profiles. Each worker of a given type listens for the
-   * "tasks" defined in its profile below. The task names represent a Task
-   * defined in api.services.tasks. Note that 'memoryBound' and 'cpuBound' are
-   * arbitrary names.
-   * You can set these per environment in config/env proxyEngine: { { profiles: ... } }
+   * Set profile to subscribe to crons, events, or tasks in the matching profile (proxyEngine.<type>.profiles).
+   * If process.env.PROFILE does not match a profile, the application will not subscribe to any crons, events, or tasks
    */
-  profiles: {
-    // memoryBound: {
-    //   tasks: [ 'hiMemoryTask1' ]
-    // },
-    // cpuBound: {
-    //   tasks: [ 'VideoEncoder', 'hiCpuTask2' ]
-    // }
-  },
+  profile: process.env.PROFILE,
 
   /**
    * The config for cron workers
    */
-  crons_config: {},
+  crons_config: {
+    /**
+     * Define worker profiles. Each profile of a given type listens for the
+     * "crons" defined in its profile below. The cron names represent a Cron
+     * defined in api.crons.
+     * You can set these per environment in config/env
+     * proxyEngine: { crons_config: { profiles: ... } }
+     */
+    profiles: {}
+  },
 
   /**
    * The config for event workers
    */
-  events_config: {},
+  events_config: {
+    /**
+     * Define worker profiles. Each profile of a given type listens for the
+     * "events" defined in its profile below. The event names represent an Event
+     * defined in api.events.
+     * You can set these per environment in config/env
+     * proxyEngine: { events_config: { profiles: ... } }
+     */
+    profiles: {}
+  },
 
   /**
    * The config for task workers
    */
-  tasks_config: {},
-  /**
-   * Set worker to subscribe to crons, events, or tasks in the matching profile (proxyEngine.profiles).
-   * If process.env.WORKER does not match a profile, the application will not subscribe to any crons, events, or tasks
-   */
-  worker: process.env.WORKER
+  tasks_config: {
+    /**
+     * Define worker profiles. Each profile of a given type listens for the
+     * "tasks" defined in its profile below. The task names represent a Task
+     * defined in api.tasks.
+     * You can set these per environment in config/env
+     * proxyEngine: { tasks_config: { profiles: ... } }
+     */
+    profiles: {}
+  }
 }

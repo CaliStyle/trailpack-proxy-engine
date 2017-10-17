@@ -94,27 +94,132 @@ const App = {
       }
     },
     events: {
-      onTest: class onTestEvent extends Event {
+      onAutoTestEvent: class onAutoTestEvent extends Event {
         subscribe() {
-          console.log('I WAS Subscribed', !!this.app)
-          this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
-          this.app.services.ProxyEngineService.subscribe('onTestEvent.test2','test2', this.test2)
+          console.log('I AM AUTOMATICALLY SUBSCRIBING...', !!this.app)
+          this.app.services.ProxyEngineService.subscribe('onAutoTestEvent.test','test', this.test)
+          this.app.services.ProxyEngineService.subscribe('onAutoTestEvent.test2','test2', this.test2)
         }
         test(msg, data, options) {
-          console.log('I WAS TESTED', !!this.app)
+          console.log('test: I SUBSCRIBED AUTOMATICALLY', msg, data, options)
+          return options.done ? options.done() : true
         }
         test2(msg, data, options) {
-          console.log('I WAS TESTED TOO', !!this.app)
+          console.log('test2: I SUBSCRIBED AUTOMATICALLY TOO', msg, data, options)
+          return options.done ? options.done() : true
+        }
+      },
+      onTestEvent: class onTestEvent extends Event {
+        test3(msg, data, options) {
+          console.log('test: I WAS PROFILE SUBSCRIBED', msg, data, options)
+          return options.done ? options.done() : true
+        }
+        test4(msg, data, options) {
+          console.log('test2: I WAS PROFILE SUBSCRIBED TOO', msg, data, options)
+          return options.done ? options.done() : true
+        }
+      },
+      onNotTestEvent: class onNotTestEvent extends Event {
+        test5(msg, data, options) {
+          console.log('I WAS TESTED and should not have been', msg, data, options)
+          const err = new Error('I am not subscribed')
+          return options.done ? options.done(err) : true
+        }
+        test6(msg, data, options) {
+          console.log('I WAS TESTED TOO and should not have been', msg, data, options)
+          const err = new Error('I am not subscribed')
+          return options.done ? options.done(err) : true
         }
       }
     },
     crons: {
+      onAutoTestCron: class onAutoTestCron extends Cron {
+        schedule() {
+          console.log('I AM AUTOMATICALLY SCHEDULING...', !!this.app)
+          this.test()
+          this.test2()
+        }
+
+        test() {
+          const startTime = new Date(Date.now() + 5000)
+          const endTime = new Date(startTime.getTime() + 5000)
+          console.log('I HAVE BEEN AUTOMATICALLY SCHEDULED', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
+            console.log('Time for tea!')
+          })
+        }
+
+        test2() {
+          const startTime = new Date(Date.now() + 5000)
+          const endTime = new Date(startTime.getTime() + 5000)
+          console.log('I HAVE BEEN AUTOMATICALLY SCHEDULED', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
+            console.log('Time for tea!')
+          })
+        }
+      },
       onTestCron: class onTestCron extends Cron {
         test() {
           const startTime = new Date(Date.now() + 5000)
           const endTime = new Date(startTime.getTime() + 5000)
-          console.log('I HAVE BEEN SCHEDULED')
-          this.schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, () => {
+          console.log('I HAVE BEEN PROFILE SCHEDULED', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
+            console.log('Time for tea!')
+          })
+        }
+        test2() {
+          const startTime = new Date(Date.now() + 5000)
+          const endTime = new Date(startTime.getTime() + 5000)
+          console.log('I HAVE BEEN PROFILE SCHEDULED', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
+            console.log('Time for tea!')
+          })
+        }
+      },
+      onNotTestCron: class onNotTestCron extends Cron {
+        test() {
+          const startTime = new Date(Date.now() + 5000)
+          const endTime = new Date(startTime.getTime() + 5000)
+          console.log('I HAVE BEEN SCHEDULED AND SHOULD NOT BE', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
+            console.log('Time for tea!')
+          })
+        }
+        test2() {
+          const startTime = new Date(Date.now() + 5000)
+          const endTime = new Date(startTime.getTime() + 5000)
+          console.log('I HAVE BEEN SCHEDULED AND SHOULD NOT BE', !!this.app)
+
+          this.scheduler.scheduleJob({
+            start: startTime,
+            end: endTime,
+            rule: '*/1 * * * * *'
+          }, () => {
             console.log('Time for tea!')
           })
         }
@@ -138,9 +243,7 @@ const App = {
     main: {
       packs: packs
     },
-    policies: {
-
-    },
+    policies: {},
     log: {
       logger: new smokesignals.Logger('debug')
     },
@@ -150,35 +253,37 @@ const App = {
     proxyEngine: {
       live_mode: true,
       auto_save: false,
-
+      profile: 'testProfile',
       crons_config: {
-        type: 'cron',
         profiles: {
-          testProfile: {
-            crons: ['onTestCron.test']
-          },
-          otherProfile: {
-            crons: ['OtherTestCron']
-          }
-        },
-        exchange: 'my-test-exchange-name'
+          testProfile: [
+            'onTestCron.test',
+            'onTestCron.test2'
+          ],
+          otherProfile: ['otherTestCron.test']
+        }
       },
       events_config: {
-        type: 'event'
+        profiles: {
+          testProfile: [
+            'onTestEvent.test3',
+            'onTestEvent.test4'
+          ],
+          otherProfile: [
+            'onTestEvent.test'
+          ]
+        }
       },
       tasks_config: {
-        type: 'task',
         profiles: {
-          testProfile: {
-            tasks: ['TestCron']
-          },
-          otherProfile: {
-            tasks: ['OtherTestCron']
-          }
-        },
-        exchange: 'my-test-exchange-name'
-      },
-      worker: 'testProfile'
+          testProfile: [
+            'testTask.test'
+          ],
+          otherProfile: [
+            'otherTestTask.test'
+          ]
+        }
+      }
     }
   }
 }

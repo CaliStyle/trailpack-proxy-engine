@@ -81,11 +81,6 @@ describe('ProxyEngineService', () => {
       done(err)
     }
   })
-  it('should handle api.events', (done) => {
-    global.app.services.ProxyEngineService.publish('test', {hello: 'world'})
-    global.app.services.ProxyEngineService.publish('test2', {hello: 'world'})
-    done()
-  })
   it('should do correct pagination page 1', (done) => {
     const count = 100
     const offset = 0

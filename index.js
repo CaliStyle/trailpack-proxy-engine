@@ -94,7 +94,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
 
 /**
  * Get the profile for the current process
- * The profile contains a list of tasks that this process can work on
+ * The profile contains a list that this process can work on
  * If there is no profile (ie the current process is not a worker process), this returns undefined
  */
 function getWorkerProfile(typeConfig) {

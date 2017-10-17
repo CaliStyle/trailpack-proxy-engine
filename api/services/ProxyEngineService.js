@@ -4,7 +4,7 @@
 const Service = require('trails/service')
 const _ = require('lodash')
 const Errors = require('proxy-engine-errors')
-const EVENT_SUBSCRIBER_STATUS = require('../utils/enums').EVENT_SUBSCRIBER_STATUS
+const EVENT_SUBSCRIBER_STATUS = require('../../lib').Enums.EVENT_SUBSCRIBER_STATUS
 /**
  * @module ProxyEngineService
  * @description Global Proxy Engine Service
@@ -178,6 +178,11 @@ module.exports = class ProxyEngineService extends Service {
     return order // = _.defaultsDeep(order, overrides)
   }
 
+  /**
+   *
+   * @param defaults
+   * @param overrides
+   */
   mergeOptionWheres(defaults, overrides) {
     defaults = defaults || {}
     overrides = overrides || {}
@@ -185,6 +190,12 @@ module.exports = class ProxyEngineService extends Service {
     return where
   }
 
+  /**
+   *
+   * @param defaults
+   * @param overrides
+   * @returns {*}
+   */
   mergeOptionOffsets(defaults, overrides) {
     let offset = defaults
     if (overrides) {
@@ -193,6 +204,12 @@ module.exports = class ProxyEngineService extends Service {
     return offset
   }
 
+  /**
+   *
+   * @param defaults
+   * @param overrides
+   * @returns {*}
+   */
   mergeOptionLimits(defaults, overrides) {
     let limit = defaults
     if (overrides) {
