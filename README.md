@@ -15,28 +15,32 @@ The goals of Proxy Engine is to be a free form scaffold that focuses on modern e
 - Loaders
 
 Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
-- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing
+- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing (WIP)
 - [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
   * [Proxy-Cart-Countries](https://github.com/calistyle/trailpack-proxy-cart-countries) Default Tax Rate Provider and Shipping Zones validator.
-- [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System
-- [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System
-- [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network
+- [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System (WIP)
+- [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System (WIP)
+- [Proxy-Sitemap](https://github.com/calistyle/trailpack-proxy-sitemap) A robust Sitemap Builder (WIP)
+- [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network (WIP)
 - [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
   * [Stripe.com Payment Processor](https://github.com/CaliStyle/proxy-generics-stripe)
-  * [Authorize.net Payment Processor](https://github.com/CaliStyle/proxy-generics-authorize.net)
-  * [GoShippo.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shippo)
-  * [Shipstation.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shipstation)
-  * [Taxjar.com Tax Processor](https://github.com/CaliStyle/proxy-generics-taxjar)
+  * [Authorize.net Payment Processor](https://github.com/CaliStyle/proxy-generics-authorize.net) (WIP)
+  * [GoShippo.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shippo) (WIP)
+  * [Shipstation.com Shipping/Fulfillment Processor](https://github.com/CaliStyle/proxy-generics-shipstation) (WIP)
+  * [Taxjar.com Tax Processor](https://github.com/CaliStyle/proxy-generics-taxjar) (WIP)
   * [Mandrill Email Provider](https://github.com/CaliStyle/proxy-generics-mandrill)
-  * [Gcloud Data Store Provider](https://github.com/CaliStyle/proxy-generics-gcloud)
-  * [Google Maps Geolocation Provider](https://github.com/calistyle/proxy-generics-google-maps)
-  * [Cloudinary Image Provider](https://github.com/calistyle/proxy-generics-cloudinary)
+  * [Gcloud Data Store Provider](https://github.com/CaliStyle/proxy-generics-gcloud) (WIP)
+  * [Google Maps Geolocation Provider](https://github.com/calistyle/proxy-generics-google-maps) (WIP)
+  * [Cloudinary Image Provider](https://github.com/calistyle/proxy-generics-cloudinary) (WIP)
   * [Render Service](https://github.com/calistyle/proxy-generics-render)
 
-Proxy Engine's main job is a PubSub provider with persistence. Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
+Proxy Engine's main job is a Cron/PubSub/Task provider with persistence. 
+- Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
+- Cron Jobs are run and can be separated by worker
+- Tasks are run and can be separated by worker
 
-Proxy Engine can also act as a history API. When configured, it can save every database event as well as every custom event. 
+Proxy Engine can also act as a history API if events are streamed to deep storage.
 
 ```
 (TODO example)
@@ -97,7 +101,7 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
 Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
 
 #### Subscribe
-The `subscribe()` method is reserved and intended to automatically subscribe instances regardless of their worker profile.  It's possible to have an instance level cron job gather information from a remote site and change the instance by publishing and event that it is automatically subscribed to. 
+The `subscribe()` method method has reserved functionality and is intended to automatically subscribe instances regardless of their worker profile.  It's possible to have an instance level cron job gather information from a remote site and change the instance by publishing and event that it is automatically subscribed to. 
 
 ```js
 // api/events/onTestEvent.js
@@ -120,7 +124,7 @@ module.exports = class onTestEvent extends Event {
 Events should either succeed and return a value or they should throw an error which will trigger a retry on the burn down schedule.
 
 ## Tasks
-While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment for example, processing video or any other significant process.
+While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment for example, processing video or any other significant process that should be segregated out to a more adapt worker environment.
 
 ### Creating Task functions
 Create tasks in the `/api/tasks` directory. 
@@ -136,7 +140,7 @@ Crons are environment specific functions that run on a schedule.
 Create crons in the `/api/crons` directory. Crons use [node-schedule](https://www.npmjs.com/package/node-schedule) and are configured per worker profile.  Using the uptime_delay in the `crons_config` can also allow you to delay when crons start to be scheduled. This is useful for when you have an app instance that starts while another is gracefully being shut down.
 
 #### Schedule
-the `schedule()` method is reserved and is intended to automatically schedule other tasks regardless of worker profile.  The is useful for crons that do instance level maintenance. It is not recommended to be used for crons that perform global operations.
+the `schedule()` method has reserved functionality and is intended to automatically schedule other tasks regardless of worker profile.  This is useful for cron jobs that do instance level maintenance. It is not recommended to be used for cron jobs that perform global operations.
 
 ```js
 // api/crons/onTestCron
@@ -203,7 +207,7 @@ module.exports = {
   profile: 'testProfile',
   // Configure Cron Jobs
   crons_config: {
-    // Delay when crons are allowed to start being processed in seconds
+    // Delay when cron jobs are allowed to start being processed in seconds
     uptime_delay: 180,
     // The profiles that are able to run specified crons
     profiles: {
@@ -236,6 +240,12 @@ module.exports = {
 ```
 
 ## ROADMAP
+- Enable any que service other than just RabbitMQ through Proxy Generics.
+- Global level events through the que service.
+- Upgrade to Trails v3
+- Support more webservers
+- Support more ORMs
+
 
 [npm-image]: https://img.shields.io/npm/v/trailpack-proxy-engine.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/trailpack-proxy-engine

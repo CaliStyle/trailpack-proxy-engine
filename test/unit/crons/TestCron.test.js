@@ -32,16 +32,17 @@ describe('Cron', () => {
     done()
   })
   it('should have time remaining until start', done => {
-    // we are giving a 1000 millisecond lead time here, because this is fast.
-    if (global.app.crons.onAutoTestCron.timeTilStart > 1000) {
+    // we are giving a 100 millisecond lead time here, because this is short.
+    if (global.app.crons.onAutoTestCron.timeTilStart > 100) {
       assert.equal(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
     }
     else {
-      assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 2)
+      assert.equal(global.app.crons.onAutoTestCron.scheduledJobs.length, 2)
     }
     done()
   })
   it('should get jobs that are scheduled now', done => {
+    // The delay in app.proxyEngine.crons_config.uptime_delay is 1 second, so let's wait that long
     setTimeout( function() {
       assert.equal(global.app.crons.onAutoTestCron.scheduledJobs.length, 2)
       done()
