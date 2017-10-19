@@ -255,6 +255,7 @@ const App = {
       auto_save: false,
       profile: 'testProfile',
       crons_config: {
+        uptime_delay: 1,
         profiles: {
           testProfile: [
             'onTestCron.test',
