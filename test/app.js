@@ -145,7 +145,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN AUTOMATICALLY SCHEDULED', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onAutoTestCron.test',{
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
@@ -159,7 +159,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN AUTOMATICALLY SCHEDULED', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onAutoTestCron.test2',{
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
@@ -174,7 +174,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN PROFILE SCHEDULED', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onTestCron.test',{
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
@@ -187,7 +187,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN PROFILE SCHEDULED', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onTestCron.test2', {
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
@@ -202,7 +202,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN SCHEDULED AND SHOULD NOT BE', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onNotTestCron.test',{
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
@@ -215,7 +215,7 @@ const App = {
           const endTime = new Date(startTime.getTime() + 5000)
           console.log('I HAVE BEEN SCHEDULED AND SHOULD NOT BE', !!this.app)
 
-          this.scheduler.scheduleJob({
+          this.scheduler.scheduleJob('onNotTestCron.test2',{
             start: startTime,
             end: endTime,
             rule: '*/1 * * * * *'
