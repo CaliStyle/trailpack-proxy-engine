@@ -12,10 +12,12 @@ This node.js system is an event management system and loader engine made for plu
 The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. It marshals three main features:
 - Events (Publish, Subscribe, ReTry)
 - Tasks
-- Loaders
+- Cron Jobs
+
+And seeds that functionality to all of it's trailpacks so they can be used together easily.
 
 Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
-- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Router with built in AAA Testing (WIP)
+- [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Content Router with built in AAA Testing (WIP)
 - [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
   * [Proxy-Cart-Countries](https://github.com/calistyle/trailpack-proxy-cart-countries) Default Tax Rate Provider and Shipping Zones validator.
 - [Proxy-CMS](https://github.com/calistyle/trailpack-proxy-cms) A robust Content Management System (WIP)
