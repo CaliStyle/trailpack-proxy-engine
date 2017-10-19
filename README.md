@@ -96,6 +96,9 @@ const token = ProxyEngineService.subscribe('callAgainLocation', 'eventName', cal
 ### Creating Event functions
 Create events in the `/api/events` directory and subscribe to them on load using `/config/events.js`
 
+#### Subscribe
+The `subscribe()` method is reserved and intended to automatically subscribe instances regardless of their worker profile.  It's possible to have an instance level cron job gather information from a remote site and change the instance by publishing and event that it is automatically subscribed to. 
+
 ```js
 // api/events/onTestEvent.js
 module.exports = class onTestEvent extends Event {
@@ -130,7 +133,10 @@ TODO example
 Crons are environment specific functions that run on a schedule. 
 
 ### Creating Crons
-Create crons in the `/api/crons` directory. Crons use [node-schedule](https://www.npmjs.com/package/node-schedule) and are configured per worker profile.
+Create crons in the `/api/crons` directory. Crons use [node-schedule](https://www.npmjs.com/package/node-schedule) and are configured per worker profile.  Using the uptime_delay in the `crons_config` can also allow you to delay when crons start to be scheduled. This is useful for when you have an app instance that starts while another is gracefully being shut down.
+
+#### Schedule
+the `schedule()` method is reserved and is intended to automatically schedule other tasks regardless of worker profile.  The is useful for crons that do instance level maintenance. It is not recommended to be used for crons that perform global operations.
 
 ```js
 // api/crons/onTestCron
@@ -193,44 +199,39 @@ module.exports = {
   live_mode: true,
   // If every event should be saved automatically
   auto_save: false,
-  // Configure Crons
+  // The worker env profile for this app
+  profile: 'testProfile',
+  // Configure Cron Jobs
   crons_config: {
-    type: 'cron',
+    // Delay when crons are allowed to start being processed in seconds
+    uptime_delay: 180,
     // The profiles that are able to run specified crons
     profiles: {
       // If the worker matches `testProfile`, then it's crons can run
-      testProfile: {
-        crons: ['onTestCron.test']
-      },
+      testProfile:  ['onTestCron.test'],
       // If the worker matches `otherProfile`, then it's crons can run
-      otherProfile: {
-        crons: ['otherTestCron.test']
-      }
-    },
-    exchange: 'my-test-exchange-name'
+      otherProfile: ['otherTestCron.test']
+    }
   },
   // Configure Events
   events_config: {
-    type: 'event'
+    profiles: {
+      // If the worker matches `testProfile`, then it's events can run
+      testProfile:  ['onTestEvent.test'],
+      // If the worker matches `otherProfile`, then it's events can run
+      otherProfile: ['otherTestEvent.test']
+    }
   },
   // Configure Tasks
   tasks_config: {
-    type: 'task',
     // The profiles that are able to run specified tasks
     profiles: {
       // If the worker matches `testProfile`, then it's tasks can run
-      testProfile: {
-        tasks: ['TestTask']
-      },
+      testProfile: ['TestTask'],
       // If the worker matches `otherProfile`, then it's tasks can run
-      otherProfile: {
-        tasks: ['OtherTestTask']
-      }
-    },
-    exchange: 'my-test-exchange-name'
-  },
-  // The worker env profile for this app
-  worker: 'testProfile'
+      otherProfile: ['OtherTestTask']
+    }
+  }
 }
 ```
 

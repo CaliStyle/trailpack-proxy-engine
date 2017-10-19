@@ -31,13 +31,44 @@ describe('Cron', () => {
 
     done()
   })
-  it('should get time remaining until start', done => {
-    if (global.app.crons.onAutoTestCron.timeTilStart > 0) {
+  it('should have time remaining until start', done => {
+    // we are giving a 100 millisecond lead time here, because this is fast.
+    if (global.app.crons.onAutoTestCron.timeTilStart > 100) {
       assert.equal(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
     }
     else {
       assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
     }
+    done()
+  })
+  it('should get jobs that are scheduled now', done => {
+    setTimeout( function() {
+      assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
+      done()
+    },1000)
+  })
+  it('should cancel a job', done => {
+    // assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
+    const job = global.app.crons.onAutoTestCron.scheduledJobs[0]
+    assert.equal(job.cancel(), true)
+    done()
+  })
+  it('should cancel a job through class', done => {
+    // assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
+    const job = global.app.crons.onAutoTestCron.scheduledJobs[0]
+    assert.equal(global.app.crons.onAutoTestCron.cancel(job), true)
+    done()
+  })
+  it('should cancel the next job', done => {
+    // assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
+    const job = global.app.crons.onAutoTestCron.scheduledJobs[0]
+    assert.equal(job.cancelNext(), true)
+    done()
+  })
+  it('should cancel next job through class', done => {
+    // assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
+    const job = global.app.crons.onAutoTestCron.scheduledJobs[1]
+    assert.equal(global.app.crons.onAutoTestCron.cancelNext(job), true)
     done()
   })
 })
