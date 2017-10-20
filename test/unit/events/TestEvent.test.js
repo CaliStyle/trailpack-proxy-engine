@@ -23,6 +23,42 @@ describe('Event', () => {
 
     done()
   })
+  it('should get events onAutoTestEvent', done => {
+    assert.equal(global.app.events.onAutoTestEvent.events.length, 2)
+    done()
+  })
+  it('should get subscribers onAutoTestEvent', done => {
+    assert.equal(global.app.events.onAutoTestEvent.subscribers.length, 2)
+    done()
+  })
+  it('should get subscribed listeners onAutoTestEvent', done => {
+    assert.equal(global.app.events.onAutoTestEvent.subscribed.length, 2)
+    done()
+  })
+  it('should get events onTestEvent', done => {
+    assert.equal(global.app.events.onTestEvent.events.length, 2)
+    done()
+  })
+  it('should get subscribers onTestEvent', done => {
+    assert.equal(global.app.events.onTestEvent.subscribers.length, 2)
+    done()
+  })
+  it('should get subscribed listeners onTestEvent', done => {
+    assert.equal(global.app.events.onTestEvent.subscribed.length, 2)
+    done()
+  })
+  it('should get events onNotTestEvent', done => {
+    assert.equal(global.app.events.onNotTestEvent.events.length, 2)
+    done()
+  })
+  it('should get subscribers onNotTestEvent', done => {
+    assert.equal(global.app.events.onNotTestEvent.subscribers.length, 0)
+    done()
+  })
+  it('should get subscribed listeners onNotTestEvent', done => {
+    assert.equal(global.app.events.onNotTestEvent.subscribed.length, 0)
+    done()
+  })
   it('should publish an event to onAutoTestEvent.test', done => {
     try {
       global.app.services.ProxyEngineService.publish('test', {test: 'test'}, {done: done})
