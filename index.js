@@ -4,11 +4,11 @@
 const Trailpack = require('trailpack')
 const _ = require('lodash')
 const lib = require('./lib')
-const utils = require('./lib/utils')
-const Client = lib.Client
-const rabbit = require('rabbot')
+// const utils = require('./lib/utils')
+// const Client = lib.Client
+// const rabbit = require('rabbot')
 // automatically nack exceptions in handlers
-rabbit.nackOnError()
+// rabbit.nackOnError()
 
 module.exports = class ProxyEngineTrailpack extends Trailpack {
 
@@ -17,12 +17,13 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    */
   validate () {
     if (!_.includes(_.keys(this.app.packs), 'express')) {
-      return Promise.reject(new Error('This Trailpack only works for express!'))
+      return Promise.reject(new Error('This Trailpack currently only works for express!'))
     }
 
     if (!_.includes(_.keys(this.app.packs), 'sequelize')) {
-      return Promise.reject(new Error('This Trailpack only works for Sequelize!'))
+      return Promise.reject(new Error('This Trailpack currently only works for Sequelize!'))
     }
+
     return Promise.all([
       lib.Validator.validateProxyEngineConfig(this.app.config.proxyEngine)
     ])
@@ -32,28 +33,6 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
    * Adds Routes, Policies, and Agenda
    */
   configure () {
-
-    // const cronConfig = this.app.config.proxyEngine.crons_config
-    // const cronProfile = getWorkerProfile(cronConfig)
-    //
-    // this.app.crons = new Client(this.app, null, cronConfig.exchangeName)
-    // utils.registerCrons(cronProfile, this.app, null)
-    //
-    // const eventConfig = this.app.config.proxyEngine.events_config
-    // const eventProfile = getWorkerProfile(eventConfig)
-    //
-    // this.app.events = new Client(this.app, null, eventConfig.exchangeName)
-    // utils.registerEvents(eventProfile, this.app, null)
-
-    const taskConfig = this.app.config.proxyEngine.tasks_config
-    const taskProfile = utils.getWorkerProfile(taskConfig)
-
-    this.app.tasks = new Client(this.app, rabbit, taskConfig.exchange_name)
-
-    this.app.api.crons = this.app.api.crons || {}
-    this.app.api.events = this.app.api.events || {}
-    this.app.api.tasks = this.app.api.tasks || {}
-
     return Promise.all([
       lib.ProxyEngine.configure(this.app),
       lib.ProxyEngine.addPolicies(this.app),
@@ -61,7 +40,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
       lib.ProxyEngine.copyDefaults(this.app),
       lib.ProxyEngine.addCrons(this.app),
       lib.ProxyEngine.addEvents(this.app),
-      lib.ProxyEngine.addTasks(this.app, taskProfile, rabbit)
+      lib.ProxyEngine.addTasks(this.app)
     ])
   }
 
