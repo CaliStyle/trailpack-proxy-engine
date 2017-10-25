@@ -6,6 +6,17 @@
 module.exports = {
   type: 'misc',
   /**
+   * API and config resources provided by this Trailpack.
+   */
+  provides: {
+    api: {
+      controllers: ['EventController'],
+      services: ['ProxyEngineServiceService'],
+      models: ['Event','EventItem','EventSubscriber']
+    },
+    config: [ ]
+  },
+  /**
    * Configure the lifecycle of this pack; that is, how it boots up, and which
    * order it loads relative to other trailpacks.
    */
@@ -23,7 +34,7 @@ module.exports = {
       emit: ['trailpack:proxyengine:configured']
     },
     initialize: {
-      listen: ['trailpack:sequelize:initialized'],
+      listen: ['trailpack:proxy-sequelize:initialized'],
       emit: ['trailpack:proxyengine:initialized']
     }
   }

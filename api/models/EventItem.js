@@ -9,30 +9,26 @@ const Model = require('trails/model')
 module.exports = class EventItem extends Model {
 
   static config (app, Sequelize) {
-    let config = {}
-    if (app.config.database.orm === 'sequelize') {
-      config = {
-        options: {
-          underscored: true
-        },
-        classMethods: {
-          /**
-           * Associate the Model
-           * @param models
-           */
-          associate: (models) => {
-            models.EventItem.belongsTo(models.Event, {
+    return {
+      options: {
+        underscored: true
+      },
+      classMethods: {
+        /**
+         * Associate the Model
+         * @param models
+         */
+        associate: (models) => {
+          models.EventItem.belongsTo(models.Event, {
 
-            })
-          }
+          })
         }
       }
     }
-    return config
   }
 
   static schema (app,Sequelize) {
-    const schema = {
+    return {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -54,6 +50,5 @@ module.exports = class EventItem extends Model {
         references: null
       }
     }
-    return schema
   }
 }

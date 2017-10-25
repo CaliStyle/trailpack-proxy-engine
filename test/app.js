@@ -31,8 +31,8 @@ if (ORM === 'waterline') {
   packs.push(require('trailpack-waterline'))
 }
 else if (ORM === 'sequelize') {
-  packs.push(require('trailpack-sequelize'))
-  if (DIALECT == 'postgres') {
+  packs.push(require('trailpack-proxy-sequelize'))
+  if (DIALECT === 'postgres') {
     stores.sqlitedev = {
       database: 'ProxyEngine',
       host: '127.0.0.1',
@@ -77,6 +77,8 @@ const App = {
   api: {
     models: {
       Event: require('../api/models/Event'),
+      EventItem: require('../api/models/EventItem'),
+      EventSubscriber: require('../api/models/EventSubscriber'),
       Item: class Item extends Model {
         static config(app, Sequelize) {
           return {

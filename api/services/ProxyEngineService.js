@@ -339,7 +339,7 @@ module.exports = class ProxyEngineService extends Service {
   resolveEvent(event, options){
     options = options || {}
     const Event = this.app.orm['Event']
-    if (event instanceof Event.Instance){
+    if (event instanceof Event){
       return Promise.resolve(event)
     }
     return Event.sequelize.transaction(t => {
@@ -430,7 +430,7 @@ module.exports = class ProxyEngineService extends Service {
   resolveEventSubscriber(eventSubscriber, options) {
     options = options || {}
     const EventSubscriber = this.app.orm['EventSubscriber']
-    if (eventSubscriber instanceof EventSubscriber.Instance){
+    if (eventSubscriber instanceof EventSubscriber){
       return Promise.resolve(eventSubscriber)
     }
     return EventSubscriber.sequelize.transaction(t => {

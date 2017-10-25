@@ -10,7 +10,7 @@ const EVENT_SUBSCRIBER_STATUS = require('../../lib/').Enums.EVENT_SUBSCRIBER_STA
 module.exports = class EventSubscriber extends Model {
 
   static config (app, Sequelize) {
-    const config = {
+    return {
       options: {
         underscored: true
       },
@@ -28,11 +28,10 @@ module.exports = class EventSubscriber extends Model {
         }
       }
     }
-    return config
   }
 
   static schema (app, Sequelize) {
-    const schema = {
+    return {
       // The event ID this is bound too.
       // event_id: {
       //   type: Sequelize.INTEGER,
@@ -77,6 +76,5 @@ module.exports = class EventSubscriber extends Model {
         defaultValue: EVENT_SUBSCRIBER_STATUS.PENDING
       }
     }
-    return schema
   }
 }
