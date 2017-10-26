@@ -5,18 +5,20 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Code Climate][codeclimate-image]][codeclimate-url]
 
-Proxy Engine is a modern backend scaffold for progressive web applications. Built on the flexibility and speed ofenvironments](http://trailsjs.io) as a backend framework.
+Proxy Engine is a modern backend scaffold for online applications. Built on the flexibility and speed of [trails.js](http://trailsjs.io) as a backend framework.
 
-This node.js system is an event management system and loader engine made for plugins from your friends at [Cali Style](https://cali-style.com).
+This node.js system is an event management engine made for plugins. Supported with love by your friends at [Cali Style](https://cali-style.com).
 
-The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. It marshals three main features:
-- Events (Publish, Subscribe, ReTry)
+The goals of Proxy Engine is to be a free form scaffold that focuses on modern enterprise grade applications and testability. It marshals four main features:
+- Events (Publish, Subscribe, Re Try)
 - Tasks
 - Cron Jobs
+- Error management
 
-And seeds that functionality to all of it's trailpacks so they can be used together easily.
+It seeds that functionality to all of it's trailpacks so they can be used together easily.
 
-Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
+Currently in the Proxy Cart ecosystem and actively maintained by Cali Style: *WIP is a Work In Progress
+- [Proxy-Sequelize](https://github.com/calistyle/trailpack-proxy-sequelize) The default ORM for all Proxy Engine Apps. 
 - [Proxy-Router](https://github.com/calistyle/trailpack-proxy-router) The Content Router with built in AAA Testing (WIP)
 - [Proxy-Cart](https://github.com/calistyle/trailpack-proxy-cart) A robust eCommerce Backend
   * [Proxy-Cart-Countries](https://github.com/calistyle/trailpack-proxy-cart-countries) Default Tax Rate Provider and Shipping Zones validator.
@@ -24,7 +26,7 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
 - [Proxy-Analytics](https://github.com/calistyle/trailpack-proxy-analytics) A robust Analytics System (WIP)
 - [Proxy-Sitemap](https://github.com/calistyle/trailpack-proxy-sitemap) A robust Sitemap Builder (WIP)
 - [Proxy-Social](https://github.com/calistyle/trailpack-proxy-social) A robust Social network (WIP)
-- [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems
+- [Proxy-Permissions](https://github.com/calistyle/trailpack-proxy-permissions) A robust ERP level Permissions Systems and Access Control List (ACL)
 - [Proxy-Generics](https://github.com/calistyle/trailpack-proxy-generics) An adapter protocol for common functions
   * [Stripe.com Payment Processor](https://github.com/CaliStyle/proxy-generics-stripe)
   * [Authorize.net Payment Processor](https://github.com/CaliStyle/proxy-generics-authorize.net) (WIP)
@@ -35,18 +37,20 @@ Currently in the Proxy Cart ecosystem and actively maintained by Cali Style:
   * [Gcloud Data Store Provider](https://github.com/CaliStyle/proxy-generics-gcloud) (WIP)
   * [Google Maps Geolocation Provider](https://github.com/calistyle/proxy-generics-google-maps) (WIP)
   * [Cloudinary Image Provider](https://github.com/calistyle/proxy-generics-cloudinary) (WIP)
-  * [Render Service](https://github.com/calistyle/proxy-generics-render)
+  * [Render Service](https://github.com/calistyle/proxy-generics-render) for rendering HTML or Markdown
 
 Proxy Engine's main job is a Cron/PubSub/Task provider with persistence. 
-- Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured schedule. By default, all database events are published, however custom events can be published and subscribed to as well.
+- Events are published and subscribers consume the events.  If the subscriber fails to consume the event, the event is persisted and tried again based on the configured retry rule schedule. By default, all database events are published. More commonly though, custom events can be published and subscribed to.
+
+- Events are publishable and subscribable and separated by worker
 - Cron Jobs are run and can be separated by worker
 - Tasks are run and can be separated by worker
 
-Proxy Engine can also act as a history API if events are streamed to deep storage.
+#### Fun Fact:
+Proxy Engine can also act as a history API if all events are streamed to some storage.
 
-```
-(TODO example)
-```
+## Example App
+[Proxy Engine Example](https://github.com/CaliStyle/proxy-engine-exa,ple)
 
 ## Events (Publish, Subscribe, ReTry)
 Proxy Engine events are contained into __two__ base categories: Instance, Global.
@@ -54,7 +58,7 @@ Proxy Engine events are contained into __two__ base categories: Instance, Global
 ### Instance Events
 Instance Events are events that __only a single instance__ in a cluster must deal with. The overwhelming majority of events fall into this category. Mostly, database events, service events etc.
 
-### Global Events
+### Global Events (TODO)
 Global Events are events that __every instance__ in a cluster must respond to. Very few events fall into this category. Mostly, global settings changes, plugin updates, notifications, etc. This requires redis.
 
 Events make it easy to extend functionality without having to edit or change the core of any Proxy Engine Module.
@@ -65,12 +69,13 @@ Subscribe takes three arguments
 * EventName <string> - The name of the event to subscribe to eg. `customer.created`
 * Callback {Function (msg, data)} - The function to execute when this event happens.
 
-Proxy Engine will automatically subscribe your events if you provide a `subscribe` method in your event handler.
+Proxy Engine will automatically run the subscribe method for your events if you provide a `subscribe` method in your event handler.
 
 ```js
 // api/events/onTestEvent.js
+const Event = require('trailpack-proxy-engine').Event
 
-class onTestEvent extends Event {
+module.exports = class onTestEvent extends Event {
   // This function is called during the Configuration of the trailpack
   subscribe() {
     this.app.services.ProxyEngineService.subscribe('onTestEvent.test','test', this.test)
@@ -85,7 +90,27 @@ class onTestEvent extends Event {
   }
 }
 ```
-Alternatively, you can subscribe to an event in a service or a controller.
+Alternatively, you can let your profile decide what events it will subscribe to:
+```js
+// app/config/proxyEngine.js
+module.exports = {
+  live_mode: false,
+  profile: 'testProfile',
+  events_config: {
+    profiles: {
+      testProfile: [
+        'onTestEvent.test3',
+        'onTestEvent.test4'
+      ],
+      otherProfile: [
+        'onTestEvent.test'
+      ]
+    }
+  }
+}
+```
+
+Also Alternatively, you can subscribe to an event in a service or a controller.
 ```js
 // From some service/controller in your app
 const ProxyEngineService = this.app.services.ProxyEngineService
@@ -107,6 +132,7 @@ The `subscribe()` method method has reserved functionality and is intended to au
 
 ```js
 // api/events/onTestEvent.js
+const Event = require('trailpack-proxy-engine').Event
 module.exports = class onTestEvent extends Event {
   // Subscribe Method is called during the Configuration of the trailpack, regardless of worker profile.
   subscribe() {
@@ -116,14 +142,16 @@ module.exports = class onTestEvent extends Event {
 
   test(msg, data, options) {
     // This function will be run when a `test` event is published
+    return Promise.resolve()
   }
   test2(msg, data, options) {
     // This function will be run when a `test2` event is published
+    return Promise.reject()
   }
 }
 ```
 
-Events should either succeed and return a value or they should throw an error which will trigger a retry on the burn down schedule.
+Events should return a promise and resolve (succeed) and return a value or they should reject (throw an error) which will trigger a retry on the burn down schedule.
 
 ## Tasks
 While event functions respond to events, tasks initiate functions allowed on a specific worker. A common use of a task is a micro-service or a worker environment for example, processing video or any other significant process that should be segregated out to a more adapt worker environment.
@@ -161,11 +189,14 @@ module.exports = class onTestCron extends Cron {
 }
 ```
 
+#### NOTE:
+If a Cron fails, it is not automatically retried. If you want parts of your cron job to retry automatically, you will need publish them as an event and consume them as a subscriber.
+
 ## Dependencies
 ### Supported ORMs
 | Repo          |  Build Status (edge)                  |
 |---------------|---------------------------------------|
-| [trailpack-sequelize](https://github.com/trailsjs/trailpack-sequelize) | [![Build status][ci-sequelize-image]][ci-sequelize-url] |
+| [trailpack-proxy-sequelize](https://github.com/trailsjs/trailpack-proxy-sequelize) | [![Build status][ci-sequelize-image]][ci-sequelize-url] |
 
 ### Supported Webserver
 | Repo          |  Build Status (edge)                  |
@@ -258,8 +289,8 @@ module.exports = {
 [codeclimate-image]: https://img.shields.io/codeclimate/github/calistyle/trailpack-proxy-engine.svg?style=flat-square
 [codeclimate-url]: https://codeclimate.com/github/calistyle/trailpack-proxy-engine
 
-[ci-sequelize-image]: https://img.shields.io/travis/trailsjs/trailpack-sequelize/master.svg?style=flat-square
-[ci-sequelize-url]: https://travis-ci.org/trailsjs/trailpack-sequelize
+[ci-sequelize-image]: https://img.shields.io/travis/trailsjs/trailpack-proxy-sequelize/master.svg?style=flat-square
+[ci-sequelize-url]: https://travis-ci.org/trailsjs/trailpack-proxy-sequelize
 
 [ci-express-image]: https://img.shields.io/travis/trailsjs/trailpack-express/master.svg?style=flat-square
 [ci-express-url]: https://travis-ci.org/trailsjs/trailpack-express
