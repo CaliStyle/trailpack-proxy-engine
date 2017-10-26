@@ -1,6 +1,6 @@
 {
   "name": "trailpack-proxy-engine",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Core - Trailpack for Proxy Engine",
   "homepage": "http://trailsjs.io",
   "author": {
@@ -45,7 +45,7 @@
     "supertest": "^2.0.1",
     "trailpack-express": "^2.0.3",
     "trailpack-router": "^2.0.0",
-    "trailpack-proxy-sequelize": "^2.0.0-beta",
+    "trailpack-proxy-sequelize": "^2.1.0",
     "trails": "^2.0.0"
   },
   "scripts": {

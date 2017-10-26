@@ -257,6 +257,7 @@ const App = {
       auto_save: false,
       profile: 'testProfile',
       crons_config: {
+        auto_schedule: true,
         uptime_delay: 1,
         profiles: {
           testProfile: [
@@ -267,6 +268,7 @@ const App = {
         }
       },
       events_config: {
+        auto_subscribe: true,
         profiles: {
           testProfile: [
             'onTestEvent.test3',
@@ -278,6 +280,7 @@ const App = {
         }
       },
       tasks_config: {
+        auto_que: true,
         profiles: {
           testProfile: [
             'testTask.test'

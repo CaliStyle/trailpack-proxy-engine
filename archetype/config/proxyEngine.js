@@ -25,6 +25,10 @@ module.exports = {
    */
   crons_config: {
     /**
+     * Whether to run the schedule method on every Cron Class
+     */
+    auto_schedule: true,
+    /**
      * Delay when crons will start running.
      */
     uptime_delay: process.env.PROXY_CRON_UPTIME_DELAY || 0,
@@ -43,6 +47,10 @@ module.exports = {
    */
   events_config: {
     /**
+     * Whether to run the subscribe method on every Event class
+     */
+    auto_subscribe: true,
+    /**
      * Define worker profiles. Each profile of a given type listens for the
      * "events" defined in its profile below. The event names represent an Event
      * defined in api.events.
@@ -56,6 +64,10 @@ module.exports = {
    * The config for task workers
    */
   tasks_config: {
+    /**
+     * Whether to run the que method on Every Task class
+     */
+    auto_que: true,
     /**
      * Define worker profiles. Each profile of a given type listens for the
      * "tasks" defined in its profile below. The task names represent a Task

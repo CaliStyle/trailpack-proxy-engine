@@ -8,12 +8,14 @@ module.exports = {
   auto_save: false,
   profile: process.env.PROXY_PROFILE || null,
   crons_config: {
+    auto_schedule: true,
     uptime_delay: process.env.PROXY_CRON_UPTIME_DELAY || 0
   },
   events_config: {
-
+    auto_subscribe: true
   },
   tasks_config: {
+    auto_que: true,
     connection: {
       exchange: process.env.PROXY_TASK_EXCHANGE, // optional, defaults to `tasks-work-x`
       work_queue_name: process.env.PROXY_TASK_WORK_QUEUE, // optional, defaults to `tasks-work-q`
