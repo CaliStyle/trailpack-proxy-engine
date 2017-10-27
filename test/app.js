@@ -60,8 +60,6 @@ if ( SERVER == 'express' ) {
         'cookieParser',
         'session',
         'bodyParser',
-        'passportInit',
-        'passportSession',
         'methodOverride',
         'router',
         'www',

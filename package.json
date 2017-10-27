@@ -39,6 +39,7 @@
     "lodash": "^4.11.1",
     "mocha": "^2.4.5",
     "pg": "^6.4.2",
+    "nyc": "^11.0.2",
     "sails-disk": "^0.10.10",
     "smokesignals": "^2.0.0",
     "sqlite3": "^3.1.4",
@@ -49,7 +50,7 @@
     "trails": "^2.0.0"
   },
   "scripts": {
-    "test": "eslint --fix . && mocha",
+    "test": "eslint --fix . && nyc mocha",
     "publishPatch": "npm version patch && npm run push",
     "publishMinor": "npm version minor && npm run push",
     "publishMajor": "npm version major && npm run push",

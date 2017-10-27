@@ -20,7 +20,7 @@ module.exports = class EventController extends Controller {
     const limit = Math.max(0,req.query.limit || 10)
     const offset = Math.max(0, req.query.offset || 0)
     const sort = req.query.sort || [['created_at', 'DESC']]
-    const where = this.app.services.ProxyEventService.jsonCritera(req.query.where)
+    const where = req.query.where
 
     Event.findAndCount({
       order: sort,
@@ -31,10 +31,7 @@ module.exports = class EventController extends Controller {
       .then(events => {
         // Paginate
         this.app.services.ProxyEngineService.paginate(res, events.count, limit, offset, sort)
-        return this.app.services.ProxyPermissionsService.sanitizeResult(req, events.rows)
-      })
-      .then(result => {
-        return res.json(result)
+        return res.json(events.rows)
       })
       .catch(err => {
         return res.serverError(err)
