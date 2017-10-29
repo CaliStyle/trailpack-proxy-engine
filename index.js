@@ -4,11 +4,6 @@
 const Trailpack = require('trailpack')
 const _ = require('lodash')
 const lib = require('./lib')
-// const utils = require('./lib/utils')
-// const Client = lib.Client
-// const rabbit = require('rabbot')
-// automatically nack exceptions in handlers
-// rabbit.nackOnError()
 
 module.exports = class ProxyEngineTrailpack extends Trailpack {
 
