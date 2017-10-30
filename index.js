@@ -32,10 +32,7 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
       lib.ProxyEngine.configure(this.app),
       lib.ProxyEngine.addPolicies(this.app),
       lib.ProxyEngine.addRoutes(this.app),
-      lib.ProxyEngine.copyDefaults(this.app),
-      lib.ProxyEngine.addCrons(this.app),
-      lib.ProxyEngine.addEvents(this.app),
-      lib.ProxyEngine.addTasks(this.app)
+      lib.ProxyEngine.copyDefaults(this.app)
     ])
   }
 
@@ -45,7 +42,10 @@ module.exports = class ProxyEngineTrailpack extends Trailpack {
   initialize () {
     return Promise.all([
       // lib.ProxyEngine.init(this.app),
-      lib.ProxyEngine.streamSequelize(this.app)
+      lib.ProxyEngine.streamSequelize(this.app),
+      lib.ProxyEngine.addCrons(this.app),
+      lib.ProxyEngine.addEvents(this.app),
+      lib.ProxyEngine.addTasks(this.app)
     ])
   }
 
