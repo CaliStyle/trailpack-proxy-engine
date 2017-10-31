@@ -54,8 +54,12 @@ describe('Cron', () => {
     assert.equal(job.name, 'onAutoTestCron.test')
     done()
   })
+  it('should get nextInvocation by Job name', done => {
+    const job = global.app.crons.onAutoTestCron.nextInvocation('onAutoTestCron.test')
+    assert.ok(job)
+    done()
+  })
   it('should cancel a job', done => {
-    // assert.notEqual(global.app.crons.onAutoTestCron.scheduledJobs.length, 0)
     const job = global.app.crons.onAutoTestCron.findJobByName('onAutoTestCron.test')
     assert.equal(job.cancel(), true)
     done()
