@@ -1,6 +1,6 @@
 'use strict'
 
-const Model = require('trails/model')
+const Model = require('trails/lib/model')
 const _ = require('lodash')
 const EVENT_SUBSCRIBER_STATUS = require('../../lib/').Enums.EVENT_SUBSCRIBER_STATUS
 /**

@@ -2,7 +2,7 @@
 /* eslint no-console: [0] */
 'use strict'
 
-const Model = require('trails/model')
+const Model = require('trails/lib/model')
 const helpers = require('proxy-engine-helpers')
 const shortId = require('shortid')
 

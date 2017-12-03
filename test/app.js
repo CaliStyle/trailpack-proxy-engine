@@ -4,7 +4,7 @@
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
 const fs = require('fs')
-const Model = require('trails/model')
+const Model = require('trails/lib/model')
 const Event = require('../').Event
 const Cron = require('../').Cron
 // const lib = require('../lib')

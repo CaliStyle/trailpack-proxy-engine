@@ -1,7 +1,7 @@
 /* eslint no-console: [0] */
 'use strict'
 
-const Service = require('trails/service')
+const Service = require('trails/lib/service')
 const _ = require('lodash')
 const Errors = require('proxy-engine-errors')
 const EVENT_SUBSCRIBER_STATUS = require('../../lib').Enums.EVENT_SUBSCRIBER_STATUS
