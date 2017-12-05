@@ -22,7 +22,7 @@
   "dependencies": {
     "boom": "^6.0.0",
     "joi": "^10.2.0",
-    "moment": "^2.19.1",
+    "moment": "^2.19.3",
     "node-schedule": "^1.2.3",
     "proxy-engine-errors": "^1.0.1",
     "proxy-engine-helpers": "^1.0.4",
