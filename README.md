@@ -1,4 +1,5 @@
 # trailpack-proxy-engine
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/CaliStyle/trailpack-proxy-engine.svg?columns=all)](https://waffle.io/CaliStyle/trailpack-proxy-engine)
 
 [![NPM version][npm-image]][npm-url]
 [![Build status][ci-image]][ci-url]
