@@ -56,6 +56,19 @@ module.exports = class ProxyEngineService extends Service {
     return str
   }
 
+  sortToString(sort) {
+    let res = sort.reduce((r, a) => {
+      const s = a.reduce((res,v) => {
+        const val = Array.isArray(v) ? `[${v.join(',')}]` : v
+        res.push(val)
+        return res
+      }, [])
+      return r + s.join(',')
+    }, '')
+    res = `[${ res }]`
+    return res
+  }
+
   /**
    * Paginate Sequelize
    * @param res
@@ -78,7 +91,7 @@ module.exports = class ProxyEngineService extends Service {
     res.set('X-Pagination-Page', page)
     res.set('X-Pagination-Offset', offset)
     res.set('X-Pagination-Limit', limit)
-    res.set('X-Pagination-Sort', JSON.stringify(sort))
+    res.set('X-Pagination-Sort', this.sortToString(sort)
 
     return res
   }
