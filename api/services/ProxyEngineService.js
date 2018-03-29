@@ -56,8 +56,12 @@ module.exports = class ProxyEngineService extends Service {
     return str
   }
 
+  // TODO check that this is a valid sort string
   sortToString(sort) {
     sort = sort || []
+    if (typeof sort === 'string') {
+      return sort
+    }
     let res = sort.reduce((r, a) => {
       if (!Array.isArray(a)) {
         return a
