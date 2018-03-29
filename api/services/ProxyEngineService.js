@@ -91,7 +91,7 @@ module.exports = class ProxyEngineService extends Service {
     res.set('X-Pagination-Page', page)
     res.set('X-Pagination-Offset', offset)
     res.set('X-Pagination-Limit', limit)
-    res.set('X-Pagination-Sort', this.sortToString(sort)
+    res.set('X-Pagination-Sort', this.sortToString(sort))
 
     return res
   }
