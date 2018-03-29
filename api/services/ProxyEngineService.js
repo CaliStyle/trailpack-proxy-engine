@@ -68,15 +68,17 @@ module.exports = class ProxyEngineService extends Service {
   paginate(res, count, limit, offset, sort) {
     limit = parseInt(limit || 0)
     offset = parseInt(offset || 0)
+    sort = sort || []
 
-    const pages = Math.ceil(count / limit) == 0 ? 1 : Math.ceil(count / limit)
+    const pages = Math.ceil(count / limit) === 0 ? 1 : Math.ceil(count / limit)
     const page = Math.round(((offset + limit) / limit))
+
     res.set('X-Pagination-Total', count)
     res.set('X-Pagination-Pages', pages)
     res.set('X-Pagination-Page', page)
     res.set('X-Pagination-Offset', offset)
     res.set('X-Pagination-Limit', limit)
-    res.set('X-Pagination-Sort', sort)
+    res.set('X-Pagination-Sort', JSON.stringify(sort))
 
     return res
   }
