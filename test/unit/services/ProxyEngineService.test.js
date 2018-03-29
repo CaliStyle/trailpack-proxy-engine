@@ -108,6 +108,12 @@ describe('ProxyEngineService', () => {
     assert.equal(page, 2)
     done()
   })
+  it('should do stringify sort', (done) => {
+    const sort = [['created_at','ASC']]
+    const s = global.app.services.ProxyEngineService.sortToString(sort)
+    console.log('STRING', s)
+    done()
+  })
   it('should merge includes', (done) => {
     const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
       include: [{ model: 'hello' }]
