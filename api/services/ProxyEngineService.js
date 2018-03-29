@@ -57,13 +57,17 @@ module.exports = class ProxyEngineService extends Service {
   }
 
   sortToString(sort) {
+    sort = sort || []
     let res = sort.reduce((r, a) => {
+      if (!Array.isArray(a)) {
+        return a
+      }
       const s = a.reduce((res,v) => {
         const val = Array.isArray(v) ? `[${v.join(',')}]` : v
         res.push(val)
         return res
       }, [])
-      return r + s.join(',')
+      return `[${r + s.join(',')}]`
     }, '')
     res = `[${ res }]`
     return res
