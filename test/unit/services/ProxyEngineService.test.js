@@ -114,6 +114,12 @@ describe('ProxyEngineService', () => {
     console.log('STRING', s)
     done()
   })
+  it('should do stringify a bad sort', (done) => {
+    const sort = []
+    const s = global.app.services.ProxyEngineService.sortToString(sort)
+    console.log('STRING', s)
+    done()
+  })
   it('should merge includes', (done) => {
     const newOptions = global.app.services.ProxyEngineService.mergeOptionDefaults({
       include: [{ model: 'hello' }]
