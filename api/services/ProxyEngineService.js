@@ -67,11 +67,11 @@ module.exports = class ProxyEngineService extends Service {
         return a
       }
       const s = a.reduce((res,v) => {
-        const val = Array.isArray(v) ? `[${v.map(v => `'${v}'`).join(',')}]` : v
+        const val = Array.isArray(v) ? `[${v.map(v => `"${v}"`).join(',')}]` : v
         res.push(val)
         return res
       }, [])
-      return `[${r + s.map(s => `'${s}'`).join(',')}]`
+      return `[${r + s.map(s => `"${s}"`).join(',')}]`
     }, '')
     res = `[${ res }]`
     return res
